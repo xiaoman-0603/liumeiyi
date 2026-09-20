@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生议会内网</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --dark-blue: #112d4e;
+            --mid-blue: #3f72af;
+            --light-blue: #dbe2ef;
+            --cream: #f9f7f7;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Noto Serif SC", "Source Han Serif SC", serif;
+        }
+        body {
+            overflow: hidden;
+        }
+        /* 登录页面 */
+        .login-page {
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--dark-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease;
+        }
+        .login-box {
+            width: 380px;
+            padding: 40px 30px;
+            background: rgba(219, 226, 239, 0.15);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(219, 226, 239, 0.25);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+        .login-box h2 {
+            text-align: center;
+            color: var(--cream);
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+        }
+        .input-group {
+            margin-bottom: 22px;
+        }
+        .input-group label {
+            display: block;
+            color: var(--light-blue);
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 8px;
+            border: 1px solid rgba(219, 226, 239, 0.3);
+            background: rgba(249, 247, 247, 0.08);
+            color: var(--cream);
+            font-size: 15px;
+            outline: none;
+            transition: 0.3s;
+        }
+        .input-group input:focus {
+            border-color: var(--mid-blue);
+            background: rgba(249, 247, 247, 0.12);
+        }
+        .input-group input::placeholder {
+            color: rgba(219, 226, 239, 0.5);
+        }
+        #loginBtn {
+            width: 100%;
+            padding: 13px;
+            border-radius: 8px;
+            border: none;
+            background-color: var(--mid-blue);
+            color: var(--cream);
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        #loginBtn:hover {
+            opacity: 0.85;
+            transform: translateY(-2px);
+        }
+        .tip-text {
+            margin-top: 16px;
+            text-align: center;
+            font-size: 13px;
+            color: #ff7b7b;
+            visibility: hidden;
+        }
+        /* 论坛外层 */
+        .forum-page {
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--dark-blue);
+            display: none;
+            position: relative;
+        }
+        /* 半透明背景图 固定整体尺寸，四边留白24px */
+        .forum-bg-img {
+            position: absolute;
+            top: 24px;
+            left: 24px;
+            width: calc(100% - 48px);
+            height: calc(100% - 48px);
+            opacity: 0.22;
+            z-index: 1;
+            object-fit: cover;
+            pointer-events: none;
+            border-radius: 16px;
+        }
+        /* 全部内容包裹层：宽度和背景图完全一致，所有内容不会超出图片左右边界 */
+        .all-content-wrap {
+            position: absolute;
+            z-index: 2;
+            top: 24px;
+            left: 24px;
+            width: calc(100% - 48px);
+            height: calc(100% - 48px);
+            padding: 40px;
+            overflow-y: auto;
+        }
+        .forum-title {
+            color: var(--cream);
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 32px;
+            letter-spacing: 3px;
+        }
+        /* 左右分栏容器，宽度100%继承父容器，不会溢出 */
+        .content-row {
+            display: grid;
+            grid-template-columns: 78% 20%;
+            gap: 2%;
+            align-items: start;
+        }
+        .glass-wrap {
+            text-decoration: none;
+            display: block;
+        }
+        /* 左侧主模块 */
+        .glass-module-main {
+            width: 100%;
+            padding: 28px;
+            margin-bottom: 24px;
+            background: rgba(219, 226, 239, 0.12);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(219, 226, 239, 0.2);
+            border-radius: 14px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .glass-module-main:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 30px rgba(63, 114, 175, 0.25);
+            background: rgba(219, 226, 239, 0.18);
+        }
+        /* 右侧个人模块差异化样式 */
+        .glass-module-side {
+            width: 100%;
+            padding: 20px;
+            background: rgba(219, 226, 239, 0.08);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(219, 226, 239, 0.12);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .glass-module-side:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 30px rgba(63, 114, 175, 0.2);
+            background: rgba(219, 226, 239, 0.16);
+        }
+        .glass-module-main h3, .glass-module-side h3 {
+            color: var(--light-blue);
+            margin-bottom: 16px;
+            border-left: 4px solid var(--mid-blue);
+            padding-left: 12px;
+        }
+        .glass-module-main p, .glass-module-side p {
+            color: var(--cream);
+            line-height: 1.7;
+            opacity: 0.9;
+        }
+        /* 退出登录按钮 悬浮顶层，不属于内容模块，单独固定 */
+        .logout-btn {
+            position: fixed;
+            top: 30px;
+            right: 40px;
+            z-index: 99;
+            padding: 10px 20px;
+            border-radius: 6px;
+            border: none;
+            background: rgba(63, 114, 175, 0.6);
+            backdrop-filter: blur(6px);
+            color: var(--cream);
+            cursor: pointer;
+        }
+        .logout-btn:hover {
+            background: var(--mid-blue);
+        }
+        /* 滚动条仅在背景图内部区域 */
+        .all-content-wrap::-webkit-scrollbar {
+            width: 8px;
+        }
+        .all-content-wrap::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .all-content-wrap::-webkit-scrollbar-thumb {
+            background: rgba(219, 226, 239, 0.3);
+            border-radius: 4px;
+        }
+        /* 移动端适配 */
+        @media (max-width: 820px) {
+            .content-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+            .glass-module-side {
+                margin-bottom: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 登录界面 -->
+    <div class="login-page" id="loginPage">
+        <div class="login-box">
+            <h2>学院议会内网登录</h2>
+            <div class="input-group">
+                <label>用户ID</label>
+                <input type="text" id="userId" placeholder="输入ID">
+            </div>
+            <div class="input-group">
+                <label>密码</label>
+                <input type="password" id="userPwd" placeholder="输入登录密码">
+            </div>
+            <button id="loginBtn">进入论坛</button>
+            <div class="tip-text" id="errorTip">ID或密码错误，请重新输入</div>
+        </div>
+    </div>
+
+    <!-- 论坛主页面 -->
+    <div class="forum-page" id="forumPage">
+        <!-- 半透背景图层 -->
+        <img class="forum-bg-img" src="1.jpg" alt="背景图">
+        <!-- 悬浮退出按钮 -->
+        <button class="logout-btn" id="logoutBtn">退出登录</button>
+        <!-- 所有标题、分栏、模块全部塞进这个和背景图同尺寸容器 -->
+        <div class="all-content-wrap">
+            <h1 class="forum-title">内网论坛</h1>
+            <div class="content-row">
+                <div class="col-left">
+                    <a class="glass-wrap" href="议会成员.html" target="_self">
+                        <div class="glass-module-main">
+                            <h3>议会成员资料</h3>
+                            <p>查看全部议会成员档案、职务与个人信息</p>
+                        </div>
+                    </a>
+                    <a class="glass-wrap" href="已封存委托档案.html" target="_self">
+                        <div class="glass-module-main">
+                            <h3>已封存委托档案</h3>
+                            <p>查看已完成委托记录</p>
+                        </div>
+                    </a>
+                    <a class="glass-wrap" href="#task" target="_self">
+                        <div class="glass-module-main">
+                            <h3>接取委托</h3>
+                            <p>查看未完成委托信息、接取情况、报酬</p>
+                        </div>
+                    </a>
+                    <a class="glass-wrap" href="留言.html" target="_self">
+                        <div class="glass-module-main">
+                            <h3>留言</h3>
+                            <p>1</p>
+                        </div>
+                    </a>
+                    
+                </div>
+                <div class="col-right">
+                    <a class="glass-wrap" href="个人中心.html" target="_self">
+                        <div class="glass-module-side">
+                            <h3>个人中心</h3>
+                            <p>账号信息、权限、个人设定</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 账号数据库 ID/密码/姓名绑定
+        // 后台账号数据库：ID、密码、姓名三者绑定关联，可自由新增多条账号
+        const userDatabase = [
+        {id: "000",pwd: "111111",name: "苍岛绪"},
+        {id: "001",pwd: "123456",name: "苍屿凛"},
+        {id: "002",pwd: "456789",name: "诸玄"},
+        {id: "003",pwd: "123456",name: "诸落屿"},
+        ];
+        const loginPage = document.getElementById("loginPage");
+        const forumPage = document.getElementById("forumPage");
+        const userIdInput = document.getElementById("userId");
+        const pwdInput = document.getElementById("userPwd");
+        const loginBtn = document.getElementById("loginBtn");
+        const errorTip = document.getElementById("errorTip");
+        const logoutBtn = document.getElementById("logoutBtn");
+
+        window.onload = function () {
+            const loginStorage = localStorage.getItem("forumLogin");
+            if (loginStorage) {
+                const userInfo = JSON.parse(loginStorage);
+                const validUser = userDatabase.find(u => u.id === userInfo.id && u.pwd === userInfo.pwd);
+                if (validUser) {
+                    loginPage.style.display = "none";
+                    forumPage.style.display = "block";
+                }
+            }
+        }
+        // 登录校验
+        loginBtn.addEventListener("click", function () {
+            const inputId = userIdInput.value.trim();
+            const inputPwd = pwdInput.value.trim();
+            const matchUser = userDatabase.find(item => item.id === inputId && item.pwd === inputPwd);
+            if (matchUser) {
+                localStorage.setItem("forumLogin", JSON.stringify({
+                    id: matchUser.id,
+                    pwd: matchUser.pwd,
+                    name: matchUser.name
+                }));
+                loginPage.style.display = "none";
+                forumPage.style.display = "block";
+                errorTip.style.visibility = "hidden";
+                userIdInput.value = "";
+                pwdInput.value = "";
+            } else {
+                errorTip.style.visibility = "visible";
+            }
+        })
+        // 回车登录
+        document.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") loginBtn.click();
+        })
+        // 退出清空缓存
+        logoutBtn.addEventListener("click", function () {
+            localStorage.removeItem("forumLogin");
+            forumPage.style.display = "none";
+            loginPage.style.display = "flex";
+        })
+    </script>
+</body>
+</html>

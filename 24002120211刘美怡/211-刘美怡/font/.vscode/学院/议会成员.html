@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>议会成员资料</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --dark-blue: #112d4e;
+            --mid-blue: #3f72af;
+            --light-blue: #dbe2ef;
+            --cream: #f9f7f7;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Noto Serif SC", "Source Han Serif SC", serif;
+        }
+        body {
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+            background-color: var(--dark-blue);
+        }
+        /* 背景底图，固定24px四边留白圆角 */
+        .page-bg-img {
+            position: absolute;
+            top: 24px;
+            left: 24px;
+            width: calc(100% - 48px);
+            height: calc(100% - 48px);
+            opacity: 0.22;
+            z-index: 1;
+            object-fit: cover;
+            pointer-events: none;
+            border-radius: 16px;
+        }
+        /* 新增边界锁定容器，和背景图尺寸完全重合，仅约束不越界，内部样式全保留 */
+        .bg-limit-wrap {
+            position: absolute;
+            z-index: 2;
+            top: 24px;
+            left: 24px;
+            width: calc(100% - 48px);
+            height: calc(100% - 48px);
+            padding: 40px;
+            overflow-y: auto;
+        }
+        /* 内部滚动条仅在背景图内生效 */
+        .bg-limit-wrap::-webkit-scrollbar {
+            width: 8px;
+        }
+        .bg-limit-wrap::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .bg-limit-wrap::-webkit-scrollbar-thumb {
+            background: rgba(219, 226, 239, 0.3);
+            border-radius: 4px;
+        }
+        /* 返回按钮悬浮顶层，不属于页面内容模块 */
+        .back-btn {
+            position: fixed;
+            top: 30px;
+            left: 40px;
+            z-index: 99;
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: none;
+            background: rgba(63, 114, 175, 0.6);
+            backdrop-filter: blur(6px);
+            color: var(--cream);
+            cursor: pointer;
+            text-decoration: none;
+            transition: 0.3s;
+            font-size:14px;
+        }
+        .back-btn:hover {
+            background: var(--mid-blue);
+        }
+        /* 原有内容容器，所有尺寸、max-width完全原样不动 */
+        .content-wrap {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .page-title {
+            color: var(--cream);
+            text-align: center;
+            margin-bottom: 36px;
+            font-size: 28px;
+            letter-spacing: 3px;
+        }
+        /* 网格间隙、三列布局完全保留原始代码 */
+        .member-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+        .member-card-link {
+            text-decoration: none;
+            display: block;
+        }
+        /* 卡片内边距、宽高、圆角全部不变，不拉伸缩小 */
+        .member-glass-box {
+            width: 100%;
+            padding: 14px;
+            background: rgba(219, 226, 239, 0.12);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(219, 226, 239, 0.2);
+            border-radius: 14px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .member-glass-box:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 30px rgba(63, 114, 175, 0.25);
+            background: rgba(219, 226, 239, 0.18);
+        }
+        .avatar-wrap {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            padding: 8px;
+            background: rgba(219, 226, 239, 0.1);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(219, 226, 239, 0.22);
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        .avatar-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 4px;
+            display: block;
+        }
+        .text-card {
+            width: 100%;
+            padding: 10px;
+            background: rgba(249, 247, 247, 0.85);
+            border-radius: 0;
+            text-align: center;
+        }
+        .text-card .position {
+            font-size: 15px;
+            color: var(--dark-blue);
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+        .text-card .name {
+            font-size: 12px;
+            color: var(--mid-blue);
+        }
+        /* 响应式网格规则完全原样保留 */
+        @media (max-width: 860px) {
+            .member-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 26px;
+            }
+        }
+        @media (max-width: 520px) {
+            .member-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+        /* 移动端容器内边距仅调整外层限制框，不改动卡片 */
+        @media (max-width: 768px) {
+            .bg-limit-wrap {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <img class="page-bg-img" src="1.jpg" alt="背景底图">
+    <a href="index.html" class="back-btn">返回内网论坛</a>
+
+    <!-- 仅新增一层边界包裹容器，内部所有HTML完全原样复制无修改 -->
+    <div class="bg-limit-wrap">
+        <div class="content-wrap">
+            <h1 class="page-title">议会成员资料档案</h1>
+            <div class="member-grid">
+                <!-- 成员1：主席 苍岛绪 -->
+                <a class="member-card-link" href="member01.html" target="_self">
+                    <div class="member-glass-box">
+                        <div class="avatar-wrap">
+                            <img src="oc01.jpg" alt="苍岛绪头像">
+                        </div>
+                        <div class="text-card">
+                            <div class="position">主席</div>
+                            <div class="name">苍岛绪</div>
+                        </div>
+                    </div>
+                </a>
+                <!-- 成员2 -->
+                <a class="member-card-link" href="member02.html" target="_self">
+                    <div class="member-glass-box">
+                        <div class="avatar-wrap">
+                            <img src="oc02.jpg" alt="成员2头像">
+                        </div>
+                        <div class="text-card">
+                            <div class="position">耀院级长</div>
+                            <div class="name">林行止</div>
+                        </div>
+                    </div>
+                </a>
+                <!-- 成员3 -->
+                <a class="member-card-link" href="member03.html" target="_self">
+                    <div class="member-glass-box">
+                        <div class="avatar-wrap">
+                            <img src="oc03.jpg" alt="成员3头像">
+                        </div>
+                        <div class="text-card">
+                            <div class="position">枫院级长</div>
+                            <div class="name">诸落屿</div>
+                        </div>
+                    </div>
+                </a>
+                <!-- 成员4 -->
+                <a class="member-card-link" href="member04.html" target="_self">
+                    <div class="member-glass-box">
+                        <div class="avatar-wrap">
+                            <img src="cyl.jpg" alt="成员4头像">
+                        </div>
+                        <div class="text-card">
+                            <div class="position">溯院级长</div>
+                            <div class="name">苍屿凛</div>
+                        </div>
+                    </div>
+                </a>
+                <!-- 成员5 -->
+                <a class="member-card-link" href="member05.html" target="_self">
+                    <div class="member-glass-box">
+                        <div class="avatar-wrap">
+                            <img src="oc05.jpg" alt="成员5头像">
+                        </div>
+                        <div class="text-card">
+                            <div class="position">耀院</div>
+                            <div class="name">克莱恩</div>
+                        </div>
+                    </div>
+                </a>
+                <!-- 成员6 -->
+                <a class="member-card-link" href="member06.html" target="_self">
+                    <div class="member-glass-box">
+                        <div class="avatar-wrap">
+                            <img src="oc06.jpg" alt="成员6头像">
+                        </div>
+                        <div class="text-card">
+                            <div class="position">影院</div>
+                            <div class="name">诸玄</div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function(){
+        const loginStr = localStorage.getItem("forumLogin");
+            // 未登录直接跳登录页
+        if(!loginStr){
+        location.href = "论坛登录.html";
+        return;}
+        const loginData = JSON.parse(loginStr);
+        // 账号数据库，和首页完全一致
+        const userDatabase = [
+        {id: "000",pwd: "111111",name: "苍岛绪"},
+        {id: "001",pwd: "123456",name: "苍屿凛"},
+        {id: "002",pwd: "456789",name: "诸玄"},
+        {id: "003",pwd: "123456",name: "诸落屿"},
+        ];
+        // 校验当前登录账号是否存在数据库
+        const validUser = userDatabase.find(u => u.id === loginData.id && u.pwd === loginData.pwd);
+        if(!validUser){
+        localStorage.removeItem("forumLogin");
+        location.href = "index.html";
+        }}
+    </script>
+</body>
+</html>

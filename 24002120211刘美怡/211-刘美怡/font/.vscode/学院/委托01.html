@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>委托01详情</title>
+    <style>
+        :root {
+            --dark-blue: #112d4e;
+            --mid-blue: #3f72af;
+            --light-blue: #dbe2ef;
+            --cream: #f9f7f7;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Noto Serif SC", "Source Han Serif SC", serif;
+        }
+        body {
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+            background-color: var(--dark-blue);
+        }
+        /* 页面底层统一样式 */
+        .task-page {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+        .bg-layer {
+            position: absolute;
+            top: 24px;
+            left: 24px;
+            width: calc(100% - 48px);
+            height: calc(100% - 48px);
+            opacity: 0.22;
+            z-index: 1;
+            object-fit: cover;
+            pointer-events: none;
+            border-radius: 16px;
+        }
+        /* 新增边界约束容器，和背景图尺寸完全重合，仅限制内容不越界，内部所有样式原样保留 */
+        .bg-limit-wrap {
+            position: absolute;
+            z-index: 2;
+            top: 24px;
+            left: 24px;
+            width: calc(100% - 48px);
+            height: calc(100% - 48px);
+            padding: 40px;
+            overflow-y: auto;
+        }
+        /* 内部滚动条仅在背景图范围内生效 */
+        .bg-limit-wrap::-webkit-scrollbar {
+            width: 8px;
+        }
+        .bg-limit-wrap::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .bg-limit-wrap::-webkit-scrollbar-thumb {
+            background: rgba(219, 226, 239, 0.3);
+            border-radius: 4px;
+        }
+        /* 原有内容容器，尺寸、最大宽度完全不变 */
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .page-title {
+            color: var(--cream);
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 32px;
+            letter-spacing: 3px;
+        }
+        /* 返回按钮悬浮顶层，不属于页面内容模块 */
+        .back-btn {
+            position: fixed;
+            top: 30px;
+            right: 40px;
+            z-index: 99;
+            padding: 10px 20px;
+            border-radius: 6px;
+            border: none;
+            background: rgba(63, 114, 175, 0.6);
+            backdrop-filter: blur(6px);
+            color: var(--cream);
+            cursor: pointer;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+        .back-btn:hover {
+            background: var(--mid-blue);
+        }
+        /* 玻璃模块 —— 无悬浮浮动效果（原始padding、尺寸完全不动） */
+        .glass-block {
+            width: 100%;
+            padding: 30px;
+            margin-bottom: 24px;
+            background: rgba(219, 226, 239, 0.12);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(219, 226, 239, 0.2);
+            border-radius: 14px;
+        }
+        /* 小标题样式 */
+        .sub-title {
+            color: var(--light-blue);
+            font-size: 20px;
+            margin-bottom: 18px;
+            border-left: 4px solid var(--mid-blue);
+            padding-left: 12px;
+        }
+        /* 正文排版 */
+        .text-normal {
+            color: var(--cream);
+            line-height: 1.8;
+            font-size: 16px;
+            margin-bottom: 12px;
+            opacity: 0.92;
+        }
+        /* 对话/事件单独样式 区分层级 */
+        .text-event {
+            color: var(--light-blue);
+            line-height: 1.8;
+            font-size: 16px;
+            padding: 8px 12px;
+            margin: 10px 0;
+            background: rgba(63, 114, 175, 0.08);
+            border-radius: 8px;
+        }
+        /* 结尾档案高亮 */
+        .end-file {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(219, 226, 239, 0.15);
+            color: var(--cream);
+            font-weight: 600;
+        }
+        /* 移动端适配，仅修改外层容器内边距，不改动内部任何模块大小 */
+        @media (max-width: 768px) {
+            .bg-limit-wrap {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="task-page">
+        <img class="bg-layer" src="1.jpg" alt="背景底图">
+        <!-- 返回上一级：封存档案页 -->
+        <a href="已封存委托档案.html" class="back-btn">返回档案列表</a>
+
+        <!-- 仅新增一层边界包裹容器，内部HTML全部原样保留无修改 -->
+        <div class="bg-limit-wrap">
+            <div class="container">
+                <h1 class="page-title">委托01 详情档案</h1>
+
+                <!-- 基础委托信息 -->
+                <div class="glass-block">
+                    <h2 class="sub-title">委托基础信息</h2>
+                    <p class="text-normal">委托人：电子兔大哥</p>
+                    <p class="text-normal">需要人数：1人</p>
+                    <p class="text-normal">委托报酬：一个机械胡萝卜 + 神秘礼包</p>
+                    <p class="text-normal">接取人：秦糯</p>
+                    <p class="text-normal">获得报酬：一个机械胡萝卜 + 神秘礼包</p>
+                </div>
+
+                <!-- 委托内容 -->
+                <div class="glass-block">
+                    <h2 class="sub-title">委托内容</h2>
+                    <p class="text-normal">电子生物也要谈恋爱——去【兽院】的山林处寻找安慰失恋的电子兔小妹，她此刻正在愁眉苦脸垂头丧气，让她重新投入生活之中，努力生活。</p>
+                </div>
+
+                <!-- 任务完整记录 -->
+                <div class="glass-block">
+                    <h2 class="sub-title">任务记录</h2>
+
+                    <p class="text-normal">秦糯：在魔法书中接取到这个任务时只感到雀跃，毕竟这可是小学院发布的第一个任务！当然要由天选之院的天选之子来完成啦——想着想着便骄傲的抬头挺胸起来。</p>
+
+                    <p class="text-normal">根据任务描述前往兽院的山林，兽院与炽院相邻，并没有花费多少时间便达到了委托地点，四处寻找电子兔小妹的身影。</p>
+
+                    <p class="text-event">事件：等你找到电子兔小妹时，只见她正垂头丧气地蹲在树底下，拔着地上的草，嘴里喊着：他爱我、他不爱我、他爱我、他不爱我……</p>
+
+                    <p class="text-normal">秦糯：拖着音响轻手轻脚的坐到电子兔小妹的身边，播放音乐：爱情～三十六计～要随时保持美丽～才能得分不被判出局～</p>
+                    <p class="text-normal">清了清嗓子，振声道。</p>
+                    <p class="text-normal">“兔小妹呀！男人是衣服，不合身就换了他！！！干嘛要为男人伤心！”</p>
+
+                    <p class="text-event">事件：在你有趣的宽慰下，兔小妹渐渐抛去沮丧的心情，柔顺的双耳犹如两片轻盈的羽毛，细腻柔软。她热情地同你相拥，原来机械生物的怀抱也可以如此温暖，共振的心跳下，或许也流着和你一样的滚烫血液。</p>
+
+                    <p class="text-normal">直到她把机械胡萝卜塞进你怀里，冰冷而细腻的触感才提醒着你，面前这位表情生动的女孩是与你不同源的赛博生命。但倘若机械与人类拥有着相似的情感和人际、那二者又有什么分别？</p>
+                    <p class="text-normal">不过你并不愿多思考这个永恒的论题，只要她的笑容依旧明媚，只要你们此刻依旧相拥。而你会把她赠与你的礼物萝卜带回珍藏，作为一场短暂邂逅的小小留念。</p>
+
+                    <p class="text-normal" style="margin-top:20px;color:#a8c6e8;font-weight:600;">恭喜秦糯完成【委托01】</p>
+                    <p class="text-normal">获得奖励：机械胡萝卜x1 、神秘礼包-来自兔小妹的拥抱x1</p>
+
+                    <p class="end-file">完成者档案：秦糯 - 炽院 - ?级 - 17</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    window.onload = function(){
+        const loginStr = localStorage.getItem("forumLogin");
+            // 未登录直接跳登录页
+        if(!loginStr){
+        location.href = "index.html";
+        return;}
+        const loginData = JSON.parse(loginStr);
+        const userDatabase = [
+        {id: "000",pwd: "111111",name: "苍岛绪"},
+        {id: "001",pwd: "123456",name: "苍屿凛"},
+        {id: "002",pwd: "456789",name: "诸玄"},
+        {id: "003",pwd: "123456",name: "诸落屿"},
+        ];
+        // 校验当前登录账号是否存在数据库
+        const validUser = userDatabase.find(u => u.id === loginData.id && u.pwd === loginData.pwd);
+        if(!validUser){
+        localStorage.removeItem("forumLogin");
+        location.href = "index.html";
+        }}
+</script>
+</body>
+</html>

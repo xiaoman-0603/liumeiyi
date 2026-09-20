@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>议会留言板</title>
+    <style>
+        /* 全局统一配色，和内网主页完全一致 */
+        :root {
+            --dark-blue: #112d4e;
+            --mid-blue: #3f72af;
+            --light-blue: #dbe2ef;
+            --cream: #f9f7f7;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Noto Serif SC", "Source Han Serif SC", serif;
+        }
+        body {
+            background-color: var(--dark-blue);
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        /* 统一全局背景图 */
+        .page-bg-img {
+            position: absolute;
+            top: 24px;
+            left: 24px;
+            width: calc(100% - 48px);
+            height: calc(100% - 48px);
+            opacity: 0.22;
+            z-index: 1;
+            object-fit: cover;
+            pointer-events: none;
+            border-radius: 16px;
+        }
+        /* 新增：边界约束容器，仅用来限制不超出背景，不改动内部模块尺寸 */
+        .bg-limit-wrap {
+            position: absolute;
+            z-index: 2;
+            top: 24px;
+            left: 24px;
+            width: calc(100% - 48px);
+            height: calc(100% - 48px);
+            padding: 40px;
+            overflow-y: auto;
+        }
+        /* 返回按钮样式统一 */
+        .back-btn {
+            position: fixed;
+            top: 30px;
+            left: 40px;
+            z-index: 99;
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: none;
+            background: rgba(63, 114, 175, 0.6);
+            backdrop-filter: blur(6px);
+            color: var(--cream);
+            cursor: pointer;
+            text-decoration: none;
+            transition: 0.3s;
+            font-size:14px;
+        }
+        .back-btn:hover {
+            background: var(--mid-blue);
+        }
+        /* 主内容容器 原有尺寸完全保留，无修改 */
+        .content-wrap {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .page-title {
+            color: var(--cream);
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 32px;
+            letter-spacing: 3px;
+        }
+        /* 玻璃模块通用样式，完全保留你原始尺寸padding:28px，不拉长、不缩小 */
+        .glass-module {
+            width: 100%;
+            padding: 28px;
+            margin-bottom: 24px;
+            background: rgba(219, 226, 239, 0.12);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(219, 226, 239, 0.2);
+            border-radius: 14px;
+            transition: all 0.3s ease;
+        }
+        .glass-module:hover {
+            box-shadow: 0 10px 30px rgba(63, 114, 175, 0.25);
+            background: rgba(219, 226, 239, 0.18);
+        }
+        /* 留言输入区域 全部原始样式不动 */
+        .input-box h3 {
+            color: var(--light-blue);
+            margin-bottom: 16px;
+            border-left: 4px solid var(--mid-blue);
+            padding-left: 12px;
+        }
+        .msg-input {
+            width: 100%;
+            padding: 14px;
+            background: rgba(249, 247, 247, 0.08);
+            border: 1px solid rgba(219, 226, 239, 0.3);
+            border-radius: 8px;
+            color: var(--cream);
+            font-size: 15px;
+            outline: none;
+            resize: none;
+            transition: 0.3s;
+            min-height: 100px;
+        }
+        .msg-input:focus {
+            border-color: var(--mid-blue);
+            background: rgba(249, 247, 247, 0.12);
+        }
+        .msg-input::placeholder {
+            color: rgba(219, 226, 239, 0.5);
+        }
+        /* 匿名勾选栏 */
+        .anon-check-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 12px 0;
+            color: var(--light-blue);
+            font-size: 14px;
+        }
+        .anon-check-wrap input {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+        .submit-btn {
+            margin-top: 8px;
+            padding: 12px 30px;
+            border-radius: 8px;
+            border: none;
+            background-color: var(--mid-blue);
+            color: var(--cream);
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .submit-btn:hover {
+            opacity: 0.85;
+            transform: translateY(-2px);
+        }
+        /* 留言列表区域 */
+        .list-box h3 {
+            color: var(--light-blue);
+            margin-bottom: 16px;
+            border-left: 4px solid var(--mid-blue);
+            padding-left: 12px;
+        }
+        /* 单条留言卡片 美化 */
+        .msg-item {
+            width: 100%;
+            padding: 20px;
+            background: rgba(249, 247, 247, 0.85);
+            border-radius: 0;
+            margin-bottom: 16px;
+            position: relative;
+        }
+        .msg-user {
+            font-size: 15px;
+            color: var(--dark-blue);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .msg-time {
+            font-size: 12px;
+            color: var(--mid-blue);
+            margin-bottom: 10px;
+        }
+        .msg-text {
+            font-size: 14px;
+            color: #333;
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+        /* 操作按钮区域 */
+        .msg-operate {
+            display: flex;
+            gap: 16px;
+            margin-top: 12px;
+            align-items: center;
+        }
+        .like-btn, .del-btn, .comment-toggle-btn {
+            font-size: 13px;
+            cursor: pointer;
+            transition: 0.2s;
+            background: none;
+            border: none;
+        }
+        /* 恢复：未点赞=纯白镂空爱心，已点赞=红色实心 */
+        .like-btn {
+            color: #fff;
+        }
+        .like-btn.liked {
+            color: #ff6b6b;
+        }
+        .del-btn {
+            color: #999;
+        }
+        .del-btn:hover {
+            color: #ff4444;
+        }
+        .comment-toggle-btn {
+            color: var(--mid-blue);
+        }
+        .comment-toggle-btn:hover {
+            color: #285b8f;
+        }
+        /* 空留言提示 */
+        .empty-tip {
+            text-align: center;
+            color: rgba(219, 226, 239, 0.6);
+            padding: 30px 0;
+            font-size: 15px;
+        }
+        /* 评论容器 隐藏默认 */
+        .comment-wrap {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px dashed #cccccc;
+            display: none;
+        }
+        .comment-wrap.show {
+            display: block;
+        }
+        /* 发布评论输入框 */
+        .comment-input-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+        .comment-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            outline: none;
+            font-size: 13px;
+        }
+        .comment-submit {
+            padding: 0 14px;
+            background: var(--mid-blue);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size:13px;
+        }
+        /* 单条评论区块 区分层级 */
+        .comment-item {
+            padding: 12px 14px;
+            background: rgba(219, 226, 239, 0.18);
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+        .comment-user {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--dark-blue);
+            margin-bottom: 4px;
+        }
+        .comment-time {
+            font-size: 11px;
+            color: var(--mid-blue);
+            margin-bottom: 6px;
+        }
+        .comment-text {
+            font-size: 13px;
+            color: #222;
+            line-height:1.6;
+        }
+        .comment-del {
+            margin-top:6px;
+            font-size:11px;
+            color:#999;
+            border:none;
+            background:none;
+            cursor:pointer;
+        }
+        .comment-del:hover {
+            color:#ff4444;
+        }
+        /* 滚动条仅限制在背景内部容器，不溢出边界 */
+        .bg-limit-wrap::-webkit-scrollbar {
+            width: 8px;
+        }
+        .bg-limit-wrap::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .bg-limit-wrap::-webkit-scrollbar-thumb {
+            background: rgba(219, 226, 239, 0.3);
+            border-radius: 4px;
+        }
+        /* 响应式适配，不改动模块大小 */
+        @media (max-width: 768px) {
+            .bg-limit-wrap {
+                padding: 24px;
+            }
+            .glass-module {
+                padding: 28px; /* 维持原始内边距，不缩小 */
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 全局背景图 -->
+    <img class="page-bg-img" src="1.jpg" alt="背景底图">
+    <!-- 返回内网主页 -->
+    <a href="index.html" class="back-btn">返回内网论坛</a>
+
+    <!-- 仅新增一层边界约束容器，内部原有结构完全不动 -->
+    <div class="bg-limit-wrap">
+        <div class="content-wrap">
+            <h1 class="page-title">议会留言板</h1>
+
+            <!-- 留言输入模块 原始尺寸完全保留 -->
+            <div class="glass-module input-box">
+                <h3>发布留言</h3>
+                <textarea class="msg-input" id="msgContent" placeholder="在此输入留言内容，禁止空白内容发布...（回车发送消息，Shift+回车换行）"></textarea>
+                <div class="anon-check-wrap">
+                    <input type="checkbox" id="anonCheck">
+                    <label for="anonCheck">匿名发布</label>
+                </div>
+                <button class="submit-btn" id="submitMsg">提交留言</button>
+            </div>
+
+            <!-- 留言展示模块 原始尺寸完全保留 -->
+            <div class="glass-module list-box">
+                <h3>最新留言</h3>
+                <div id="msgList">
+                    <!-- 留言动态渲染区域 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 获取DOM元素
+        const msgContent = document.getElementById('msgContent');
+        const submitMsg = document.getElementById('submitMsg');
+        const msgList = document.getElementById('msgList');
+        const anonCheck = document.getElementById('anonCheck');
+
+        // 多账号数据库，和登录主页完全同步
+        const userDatabase = [
+        {id: "000",pwd: "111111",name: "苍岛绪"},
+        {id: "001",pwd: "123456",name: "苍屿凛"},
+        {id: "002",pwd: "456789",name: "诸玄"},
+        {id: "003",pwd: "123456",name: "诸落屿"},
+        ];
+        // 获取当前登录用户ID、姓名
+        let loginUserId = "";
+        let loginUserName = "";
+
+        // 初始化：读取登录信息、留言数据、点赞数据、评论数据
+        window.onload = function(){
+            // 读取登录账号缓存
+            const loginStr = localStorage.getItem("forumLogin");
+            // 未登录直接跳登录页
+            if(!loginStr){
+                location.href = "论坛登录.html";
+                return;
+            }
+            const loginData = JSON.parse(loginStr);
+            // 在账号库校验账号是否合法
+            const validUser = userDatabase.find(u => u.id === loginData.id && u.pwd === loginData.pwd);
+            if(!validUser){
+                localStorage.removeItem("forumLogin");
+                location.href = "论坛登录.html";
+                return;
+            }
+            // 校验通过，赋值当前登录ID、姓名
+            loginUserId = loginData.id;
+            loginUserName = validUser.name;
+            // 初始化本地存储留言、点赞、评论数据
+            if(!localStorage.getItem('parliamentMsg')) localStorage.setItem('parliamentMsg', JSON.stringify([]));
+            if(!localStorage.getItem('parliamentLike')) localStorage.setItem('parliamentLike', JSON.stringify({}));
+            if(!localStorage.getItem('parliamentComment')) localStorage.setItem('parliamentComment', JSON.stringify({}));
+            // 渲染留言列表
+            renderMsg();
+        }
+        
+        // 获取留言数据
+        function getMsgData(){
+            return JSON.parse(localStorage.getItem('parliamentMsg')) || [];
+        }
+        // 获取点赞数据
+        function getLikeData(){
+            return JSON.parse(localStorage.getItem('parliamentLike')) || {};
+        }
+        // 获取评论数据
+        function getCommentData(){
+            return JSON.parse(localStorage.getItem('parliamentComment')) || {};
+        }
+        // 根据ID获取对应姓名
+        function getNameById(uid){
+            const user = userDatabase.find(u => u.id === uid);
+            return user ? user.name : "未知用户";
+        }
+
+        // 渲染留言列表
+        function renderMsg() {
+            const msgData = getMsgData();
+            const likeData = getLikeData();
+            const commentData = getCommentData();
+            
+            if(msgData.length === 0) {
+                msgList.innerHTML = '<div class="empty-tip">暂无留言，快来发布第一条吧</div>';
+                return;
+            }
+            // 倒序展示，最新留言在最上方
+            let html = '';
+            msgData.reverse().forEach((item, index) => {
+                // 本条留言唯一标识
+                const msgIndex = msgData.length - 1 - index;
+                // 当前用户是否点赞
+                const isLiked = likeData[msgIndex] && likeData[msgIndex].includes(loginUserId);
+                // 点赞数量
+                const likeNum = likeData[msgIndex] ? likeData[msgIndex].length : 0;
+                // 是否为本人发布留言
+                const isSelfMsg = item.userId === loginUserId;
+                // 留言发布者姓名
+                const msgAuthorName = item.isAnon ? "匿名用户" : getNameById(item.userId);
+                // 当前留言所有评论
+                const msgComments = commentData[msgIndex] || [];
+
+                // 渲染评论区块HTML
+                let commentHtml = '';
+                msgComments.forEach((com, comIdx) => {
+                    const comAuthorName = getNameById(com.userId);
+                    // 评论删除权限：自己的评论 或 留言发布者 可删
+                    const canDelComment = (com.userId === loginUserId) || (item.userId === loginUserId);
+                    commentHtml += `
+                        <div class="comment-item">
+                            <div class="comment-user">${comAuthorName}</div>
+                            <div class="comment-time">${com.time}</div>
+                            <div class="comment-text">${com.text}</div>
+                            ${canDelComment ? `<button class="comment-del" data-midx="${msgIndex}" data-cidx="${comIdx}">删除评论</button>` : ''}
+                        </div>
+                    `;
+                });
+                const commentCount = msgComments.length;
+
+                // 镂空爱心♡ / 红心♥
+                html += `
+                    <div class="msg-item" data-index="${msgIndex}">
+                        <div class="msg-user">${msgAuthorName}</div>
+                        <div class="msg-time">${item.time}</div>
+                        <div class="msg-text">${item.text}</div>
+                        <div class="msg-operate">
+                            <button class="like-btn ${isLiked ? 'liked' : ''}" data-idx="${msgIndex}">${isLiked ? '♥' : '♡'} 点赞（${likeNum}）</button>
+                            ${isSelfMsg ? '<button class="del-btn" data-idx="' + msgIndex + '">删除留言</button>' : ''}
+                            <button class="comment-toggle-btn" data-midx="${msgIndex}">展开评论（${commentCount}）</button>
+                        </div>
+                        <!-- 评论区域 -->
+                        <div class="comment-wrap" data-wrapidx="${msgIndex}">
+                            <!-- 发布评论 -->
+                            <div class="comment-input-box">
+                                <input class="comment-input" data-midx="${msgIndex}" placeholder="写下你的评论...">
+                                <button class="comment-submit" data-midx="${msgIndex}">发送</button>
+                            </div>
+                            <!-- 已有评论列表 -->
+                            <div class="comment-list">
+                                ${commentHtml || '<div style="font-size:12px;color:#777;">暂无评论</div>'}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            msgList.innerHTML = html;
+
+            // 点赞/取消点赞绑定
+            document.querySelectorAll('.like-btn').forEach(btn => {
+                btn.onclick = function(){
+                    const idx = this.dataset.idx;
+                    const likeData = getLikeData();
+                    if(!likeData[idx]) likeData[idx] = [];
+                    if(likeData[idx].includes(loginUserId)){
+                        likeData[idx] = likeData[idx].filter(uid => uid !== loginUserId);
+                    }else{
+                        likeData[idx].push(loginUserId);
+                    }
+                    localStorage.setItem('parliamentLike', JSON.stringify(likeData));
+                    renderMsg();
+                }
+            })
+
+            // 删除留言绑定（仅本人可见按钮）
+            document.querySelectorAll('.del-btn').forEach(btn => {
+                btn.onclick = function(){
+                    const idx = this.dataset.idx;
+                    const msgData = getMsgData();
+                    const likeData = getLikeData();
+                    const commentData = getCommentData();
+                    // 删除对应留言、点赞、评论数据
+                    msgData.splice(idx, 1);
+                    delete likeData[idx];
+                    delete commentData[idx];
+                    // 同步更新后续点赞、评论下标，避免序号错乱
+                    const newLikeData = {};
+                    const newCommentData = {};
+                    Object.keys(likeData).forEach(key => {
+                        const num = parseInt(key);
+                        if(num < idx) newLikeData[num] = likeData[key];
+                        if(num > idx) newLikeData[num - 1] = likeData[key];
+                    })
+                    Object.keys(commentData).forEach(key => {
+                        const num = parseInt(key);
+                        if(num < idx) newCommentData[num] = commentData[key];
+                        if(num > idx) newCommentData[num - 1] = commentData[key];
+                    })
+                    localStorage.setItem('parliamentMsg', JSON.stringify(msgData));
+                    localStorage.setItem('parliamentLike', JSON.stringify(newLikeData));
+                    localStorage.setItem('parliamentComment', JSON.stringify(newCommentData));
+                    renderMsg();
+                }
+            })
+
+            // 展开/收起评论切换按钮
+            document.querySelectorAll('.comment-toggle-btn').forEach(btn => {
+                btn.onclick = function(){
+                    const midx = this.dataset.midx;
+                    const wrapDom = document.querySelector(`.comment-wrap[data-wrapidx="${midx}"]`);
+                    if(wrapDom.classList.contains('show')){
+                        wrapDom.classList.remove('show');
+                        this.innerText = `展开评论（${wrapDom.querySelectorAll('.comment-item').length}）`;
+                    }else{
+                        wrapDom.classList.add('show');
+                        this.innerText = `收起评论（${wrapDom.querySelectorAll('.comment-item').length}）`;
+                    }
+                }
+            })
+
+            // 提交评论按钮绑定
+            document.querySelectorAll('.comment-submit').forEach(btn => {
+                btn.onclick = function(){
+                    const midx = this.dataset.midx;
+                    const inputDom = document.querySelector(`.comment-input[data-midx="${midx}"]`);
+                    const text = inputDom.value.trim();
+                    if(!text){
+                        alert("评论内容不能为空！");
+                        return;
+                    }
+                    const now = new Date();
+                    const time = `${now.getFullYear()}-${(now.getMonth()+1).toString().padStart(2,'0')}-${now.getDate().toString().padStart(2,'0')} ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+                    const commentData = getCommentData();
+                    if(!commentData[midx]) commentData[midx] = [];
+                    commentData[midx].push({
+                        userId: loginUserId,
+                        text: text,
+                        time: time
+                    });
+                    localStorage.setItem('parliamentComment', JSON.stringify(commentData));
+                    renderMsg();
+                }
+            })
+
+            // 删除评论按钮绑定
+            document.querySelectorAll('.comment-del').forEach(btn => {
+                btn.onclick = function(){
+                    const midx = this.dataset.midx;
+                    const cidx = Number(this.dataset.cidx);
+                    const commentData = getCommentData();
+                    commentData[midx].splice(cidx, 1);
+                    localStorage.setItem('parliamentComment', JSON.stringify(commentData));
+                    renderMsg();
+                }
+            })
+        }
+
+        // 提交留言核心方法
+        function submitMessage() {
+            // 去除首尾空格，拦截纯空格内容
+            const text = msgContent.value.trim();
+            if(!text) {
+                alert('留言内容不能为空或全为空格！');
+                return;
+            }
+            if(!loginUserId){
+                alert('请先登录内网账号！');
+                return;
+            }
+            // 获取当前时间
+            const now = new Date();
+            const time = `${now.getFullYear()}-${(now.getMonth()+1).toString().padStart(2,'0')}-${now.getDate().toString().padStart(2,'0')} ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+            
+            // 组装留言数据
+            const msgData = getMsgData();
+            msgData.push({
+                text: text,
+                time: time,
+                userId: loginUserId,
+                isAnon: anonCheck.checked
+            });
+
+            // 保存数据
+            localStorage.setItem('parliamentMsg', JSON.stringify(msgData));
+            // 清空输入、取消匿名勾选、重新渲染
+            msgContent.value = '';
+            anonCheck.checked = false;
+            renderMsg();
+        }
+
+        // 按钮点击提交
+        submitMsg.addEventListener('click', submitMessage);
+
+        // 修复BUG：全局监听回车，彻底解决勾选匿名后回车失效
+        let isComposing = false;
+        // 输入法组词监听
+        msgContent.addEventListener('compositionstart', () => isComposing = true);
+        msgContent.addEventListener('compositionend', () => isComposing = false);
+
+        // 全局键盘监听，仅输入框聚焦时触发发送
+        document.addEventListener('keydown', function(e) {
+            // 输入法正在组词，不触发
+            if (isComposing) return;
+            if(document.activeElement === msgContent){
+                // 单独回车发送，Shift+回车换行
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    submitMessage();
+                }
+            }
+        })
+    </script>
+</body>
+</html>
