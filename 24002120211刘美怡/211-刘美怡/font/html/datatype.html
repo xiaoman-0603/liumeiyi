@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据类型与运算符</title>
+    <style>
+        div{
+            width: 180px;
+            height: 180px;
+            background-color: brown;
+            margin: 10px;
+            color: aliceblue;
+            text-align: center;
+            line-height: 180px;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        var a = 6,b = 1;
+        console.log(a + b);
+        console.log(a++,++b);
+        console.log(a-b>0?a:b);
+        console.log(true&&false,true||false,!true);
+        var str = "hello world";num=123,bl=true,obj={name:"张三",age:18};ud,kong=null;
+        console.log(typeof str,typeof num,typeof bl,typeof obj,typeof ud,typeof kong);
+        console.log(0.1+0.2==0.3);
+        //js不能用==或者===来判定浮点数是否相等
+        //应为浮点数不能用二进制精确存储
+        //数据类型转换：+号的时候将数字转换成字符串，-只能用于数值运算
+        console.log(1+"1","1"-1,"11"+1-1);
+        console.log("liumeiyi"-1);
+        console.log(isNaN(NaN));
+        console.log(NaN==NaN,null===null);
+        console.log(parseInt(123.12))
+        var num =123;
+        console.log(num==parseInt(num));
+        console.log(parseInt("100,16"));
+        var num = 0;
+        for(var i=0;i<100;i++){
+            sum+=i;
+        }
+        for(var i=1;i<=99;i++){
+        if(i%7==0 || i%10==7 || i/10==7){
+            document.write("<div></div>");
+        }
+        else{
+            document.write("<div>" + i + "</div>");
+        }   
+    }
+    </script>
+</body>
+</html>
