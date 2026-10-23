@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>夜航书店 · 字体图标下导航</title>
+  <link rel="stylesheet" href="211-刘美怡/font/iconfont.css">
+  <style>
+    :root {
+      --lmy_page: #e9edf5;
+      --lmy_card: #ffffff;
+      --lmy_ink: #182230;
+      --lmy_muted: #6b7787;
+      --lmy_dock: #111a2e;
+      --lmy_accent: #ffb020;
+      --lmy_blue: #355cff;
+      --lmy_red: #ff4d4f;
+      --lmy_line: rgba(24, 34, 48, .1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--lmy_page);
+      color: var(--lmy_ink);
+      font-family: "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .lmy_screen {
+      width: min(100%, 430px);
+      min-height: 100vh;
+      margin: 0 auto;
+      padding: 18px 18px calc(112px + env(safe-area-inset-bottom));
+      background:
+        radial-gradient(circle at 92% 0%, rgba(53, 92, 255, .18), transparent 15rem),
+        var(--lmy_page);
+    }
+
+    .lmy_topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .lmy_home {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 6px 10px;
+      border: 1px solid var(--lmy_line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .72);
+      text-decoration: none;
+      font-size: 13px;
+    }
+
+    .lmy_home:focus-visible,
+    .lmy_nav_item:focus-visible {
+      outline: 3px solid rgba(53, 92, 255, .45);
+      outline-offset: 3px;
+    }
+
+    .lmy_switch {
+      font-size: 13px;
+      color: var(--lmy_blue);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 4px;
+    }
+
+    .lmy_hero {
+      padding: 26px 22px;
+      border-radius: 28px;
+      color: #fff;
+      background:
+        linear-gradient(135deg, rgba(255, 176, 32, .92), rgba(255, 77, 79, .78)),
+        var(--lmy_dock);
+      box-shadow: 0 22px 45px rgba(17, 26, 46, .2);
+    }
+
+    .lmy_hero h1 {
+      margin: 0;
+      max-width: 9ch;
+      font-size: clamp(34px, 10vw, 48px);
+      line-height: 1.05;
+      letter-spacing: -.04em;
+    }
+
+    .lmy_hero p {
+      margin: 14px 0 0;
+      max-width: 28ch;
+      color: rgba(255, 255, 255, .82);
+      font-size: 14px;
+    }
+
+    .lmy_section {
+      margin-top: 22px;
+    }
+
+    .lmy_section_title {
+      margin: 0 0 12px;
+      font-size: 18px;
+    }
+
+    .lmy_list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .lmy_card {
+      display: grid;
+      grid-template-columns: 54px minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      padding: 14px;
+      border: 1px solid var(--lmy_line);
+      border-radius: 20px;
+      background: var(--lmy_card);
+    }
+
+    .lmy_cover {
+      width: 54px;
+      height: 72px;
+      border-radius: 12px;
+      background:
+        linear-gradient(160deg, rgba(53, 92, 255, .85), rgba(17, 26, 46, .96));
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .28);
+    }
+
+    .lmy_card:nth-child(2) .lmy_cover {
+      background: linear-gradient(160deg, rgba(255, 176, 32, .95), rgba(255, 77, 79, .8));
+    }
+
+    .lmy_card:nth-child(3) .lmy_cover {
+      background: linear-gradient(160deg, rgba(24, 34, 48, .95), rgba(107, 119, 135, .82));
+    }
+
+    .lmy_book_name {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .lmy_book_meta {
+      margin: 4px 0 0;
+      color: var(--lmy_muted);
+      font-size: 13px;
+    }
+
+    .lmy_price {
+      font-weight: 700;
+      color: var(--lmy_blue);
+    }
+
+    .lmy_bottom_nav {
+      position: fixed;
+      left: 50%;
+      bottom: 0;
+      z-index: 20;
+      transform: translateX(-50%);
+      width: min(100%, 430px);
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 4px;
+      padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+      border-top: 1px solid rgba(255, 255, 255, .14);
+      background: rgba(17, 26, 46, .96);
+      box-shadow: 0 -18px 40px rgba(17, 26, 46, .28);
+      backdrop-filter: blur(16px);
+    }
+
+    .lmy_nav_item {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      min-height: 58px;
+      border-radius: 18px;
+      color: rgba(255, 255, 255, .62);
+      text-decoration: none;
+      font-size: 12px;
+    }
+
+    .lmy_nav_item.lmy_active {
+      color: #fff;
+      background: rgba(255, 255, 255, .08);
+    }
+
+    .lmy_nav_icon_wrap {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 13px;
+    }
+
+    .lmy_active .lmy_nav_icon_wrap {
+      color: var(--lmy_dock);
+      background: var(--lmy_accent);
+      box-shadow: 0 8px 18px rgba(255, 176, 32, .32);
+    }
+
+    .lmy_font_icon {
+      font-family: "iconfont" !important;
+      font-size: 22px;
+      font-style: normal;
+      line-height: 1;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .lmy_badge_number {
+      position: absolute;
+      top: -8px;
+      right: -12px;
+      min-width: 19px;
+      height: 19px;
+      padding: 0 5px;
+      border: 2px solid var(--lmy_dock);
+      border-radius: 999px;
+      background: var(--lmy_red);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 15px;
+      text-align: center;
+    }
+
+    .lmy_badge_dot {
+      position: absolute;
+      top: -3px;
+      right: -5px;
+      width: 10px;
+      height: 10px;
+      border: 2px solid var(--lmy_dock);
+      border-radius: 50%;
+      background: var(--lmy_red);
+    }
+  </style>
+</head>
+<body>
+  <main class="lmy_screen">
+    <div class="lmy_topbar">
+      <a class="lmy_home" href="index.html">回到首页 index.html</a>
+      <a class="lmy_switch" href="iconfont-4.html">切换 SVG 版</a>
+    </div>
+
+    <header class="lmy_hero">
+      <h1>夜航书店</h1>
+      <p>把今晚要读的书、想收的版本和购物车，都收进一只固定的底部 dock。</p>
+    </header>
+
+    <section class="lmy_section" aria-label="今日书单">
+      <h2 class="lmy_section_title">今日书单</h2>
+      <div class="lmy_list">
+        <article class="lmy_card">
+          <div class="lmy_cover" aria-hidden="true"></div>
+          <div><h3 class="lmy_book_name">海边印刷室</h3><p class="lmy_book_meta">短篇集 · 剩余 42%</p></div>
+          <div class="lmy_price">¥38</div>
+        </article>
+        <article class="lmy_card">
+          <div class="lmy_cover" aria-hidden="true"></div>
+          <div><h3 class="lmy_book_name">字体与街头</h3><p class="lmy_book_meta">设计随笔 · 已加入购物车</p></div>
+          <div class="lmy_price">¥56</div>
+        </article>
+        <article class="lmy_card">
+          <div class="lmy_cover" aria-hidden="true"></div>
+          <div><h3 class="lmy_book_name">夜间读书会</h3><p class="lmy_book_meta">活动 · 明天 20:00</p></div>
+          <div class="lmy_price">预约</div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <nav class="lmy_bottom_nav" aria-label="底部导航">
+    <a class="lmy_nav_item lmy_active" href="iconfont-3.html" aria-current="page">
+      <span class="lmy_nav_icon_wrap"><span class="lmy_font_icon" aria-hidden="true">&#xe77e;</span></span>
+      <span>首页</span>
+    </a>
+    <a class="lmy_nav_item" href="iconfont-3.html">
+      <span class="lmy_nav_icon_wrap"><span class="lmy_font_icon" aria-hidden="true">&#xe67e;</span><span class="lmy_badge_number">3</span></span>
+      <span>购物车</span>
+    </a>
+    <a class="lmy_nav_item" href="iconfont-3.html">
+      <span class="lmy_nav_icon_wrap"><span class="lmy_font_icon" aria-hidden="true">&#xe86d;</span><span class="lmy_badge_dot" aria-label="有更新"></span></span>
+      <span>收藏</span>
+    </a>
+    <a class="lmy_nav_item" href="iconfont-3.html">
+      <span class="lmy_nav_icon_wrap"><span class="lmy_font_icon" aria-hidden="true">&#xe8a0;</span></span>
+      <span>我的</span>
+    </a>
+  </nav>
+</body>
+</html>

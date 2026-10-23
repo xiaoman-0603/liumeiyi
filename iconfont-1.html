@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>半色调印社 · Font Awesome 字体图标样张</title>
+  <link rel="stylesheet" href="cdn/fontawesome/css/all.min.css">
+  <style>
+    :root {
+      --lmy_paper: #eef1ea;
+      --lmy_ink: #17211d;
+      --lmy_blue: #2d5bff;
+      --lmy_red: #ff3b5c;
+      --lmy_yellow: #ffd400;
+      --lmy_violet: #4b2e83;
+      --lmy_mint: #9fd8c9;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--lmy_ink);
+      background:
+        radial-gradient(circle at 20% 12%, rgba(255, 212, 0, .22), transparent 28rem),
+        linear-gradient(90deg, rgba(23, 33, 29, .055) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(23, 33, 29, .045) 1px, transparent 1px),
+        var(--lmy_paper);
+      background-size: auto, 34px 34px, 34px 34px, auto;
+      font-family: "Songti SC", "STSong", "SimSun", Georgia, serif;
+      line-height: 1.65;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .lmy_page {
+      display: grid;
+      grid-template-columns: 108px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    .lmy_rail {
+      border-right: 2px solid var(--lmy_ink);
+      padding: 22px 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 28px;
+      background: rgba(238, 241, 234, .78);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+    }
+
+    .lmy_home {
+      display: inline-block;
+      padding: 10px 12px;
+      border: 2px solid var(--lmy_ink);
+      background: var(--lmy_yellow);
+      box-shadow: 5px 5px 0 var(--lmy_blue);
+      text-decoration: none;
+      font-family: "Trebuchet MS", "Microsoft YaHei", sans-serif;
+      font-size: 14px;
+      writing-mode: vertical-rl;
+      letter-spacing: .12em;
+    }
+
+    .lmy_home:focus-visible {
+      outline: 3px solid var(--lmy_red);
+      outline-offset: 4px;
+    }
+
+    .lmy_rail_mark {
+      writing-mode: vertical-rl;
+      font-size: clamp(30px, 5vw, 58px);
+      line-height: 1;
+      color: transparent;
+      -webkit-text-stroke: 1px var(--lmy_ink);
+      text-stroke: 1px var(--lmy_ink);
+    }
+
+    .lmy_stage {
+      padding: clamp(28px, 5vw, 72px);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .lmy_stage::before {
+      content: "版";
+      position: absolute;
+      right: -4vw;
+      top: -12vw;
+      font-size: clamp(180px, 38vw, 560px);
+      line-height: 1;
+      color: rgba(45, 91, 255, .08);
+      -webkit-text-stroke: 2px rgba(23, 33, 29, .14);
+      pointer-events: none;
+    }
+
+    .lmy_hero {
+      max-width: 900px;
+      position: relative;
+      margin-bottom: clamp(34px, 6vw, 78px);
+    }
+
+    .lmy_kicker {
+      margin: 0 0 14px;
+      display: inline-block;
+      padding: 7px 12px;
+      border: 2px solid var(--lmy_ink);
+      background: var(--lmy_mint);
+      box-shadow: 4px 4px 0 var(--lmy_red);
+      font-family: "Trebuchet MS", "Microsoft YaHei", sans-serif;
+      font-size: 14px;
+    }
+
+    .lmy_title {
+      margin: 0;
+      max-width: 12ch;
+      font-size: clamp(54px, 9vw, 132px);
+      line-height: .98;
+      letter-spacing: -.05em;
+      font-weight: 900;
+    }
+
+    .lmy_lede {
+      margin: 24px 0 0;
+      max-width: 58ch;
+      font-size: clamp(17px, 2vw, 21px);
+    }
+
+    .lmy_switch {
+      margin-top: 26px;
+      display: inline-block;
+      color: var(--lmy_ink);
+      font-family: "Trebuchet MS", "Microsoft YaHei", sans-serif;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 5px;
+    }
+
+    .lmy_grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .lmy_specimen {
+      border: 2px solid var(--lmy_ink);
+      background: rgba(238, 241, 234, .9);
+      min-height: 220px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 8px 8px 0 rgba(75, 46, 131, .22);
+    }
+
+    .lmy_specimen:nth-child(1) {
+      grid-column: span 5;
+      background: var(--lmy_yellow);
+      transform: rotate(-1deg);
+    }
+
+    .lmy_specimen:nth-child(2) {
+      grid-column: span 4;
+      margin-top: 44px;
+    }
+
+    .lmy_specimen:nth-child(3) {
+      grid-column: span 3;
+      background: var(--lmy_mint);
+      transform: rotate(1.2deg);
+    }
+
+    .lmy_specimen:nth-child(4) {
+      grid-column: span 4;
+      margin-top: -28px;
+      background: rgba(255, 59, 92, .12);
+    }
+
+    .lmy_specimen:nth-child(5) {
+      grid-column: span 5;
+      box-shadow: 8px 8px 0 var(--lmy_blue);
+    }
+
+    .lmy_specimen:nth-child(6) {
+      grid-column: span 3;
+      background: var(--lmy_ink);
+      color: var(--lmy_paper);
+    }
+
+    .lmy_specimen:nth-child(7) {
+      grid-column: span 6;
+      transform: rotate(-.6deg);
+    }
+
+    .lmy_specimen:nth-child(8) {
+      grid-column: span 6;
+      margin-top: 34px;
+      background: rgba(45, 91, 255, .12);
+    }
+
+    .lmy_icon_cell {
+      display: grid;
+      place-items: center;
+      min-height: 118px;
+      color: currentColor;
+    }
+
+    .lmy_glyph {
+      display: block;
+      font-family: "Font Awesome 6 Free";
+      font-weight: 900;
+      font-style: normal;
+      font-size: clamp(54px, 7vw, 96px);
+      line-height: 1;
+      text-rendering: auto;
+    }
+
+    .lmy_name {
+      margin: 18px 0 6px;
+      font-size: clamp(24px, 3vw, 36px);
+      line-height: 1.1;
+    }
+
+    .lmy_note {
+      margin: 0;
+      max-width: 34ch;
+      font-family: "Trebuchet MS", "Microsoft YaHei", sans-serif;
+      font-size: 14px;
+    }
+
+    @media (max-width: 860px) {
+      .lmy_page {
+        grid-template-columns: 1fr;
+      }
+
+      .lmy_rail {
+        position: static;
+        height: auto;
+        flex-direction: row;
+        align-items: center;
+        border-right: 0;
+        border-bottom: 2px solid var(--lmy_ink);
+      }
+
+      .lmy_home,
+      .lmy_rail_mark {
+        writing-mode: horizontal-tb;
+      }
+
+      .lmy_grid {
+        grid-template-columns: 1fr;
+      }
+
+      .lmy_specimen,
+      .lmy_specimen:nth-child(n) {
+        grid-column: auto;
+        margin-top: 0;
+        transform: none;
+      }
+    }
+  </style>
+</head>
+<body class="lmy_page">
+  <aside class="lmy_rail" aria-label="品牌边栏">
+    <a class="lmy_home" href="index.html">回到首页 index.html</a>
+    <div class="lmy_rail_mark">半色调印社</div>
+  </aside>
+
+  <main class="lmy_stage">
+    <header class="lmy_hero">
+      <p class="lmy_kicker">Font Awesome · 字体图标印版</p>
+      <h1 class="lmy_title">把工具压进油墨。</h1>
+      <p class="lmy_lede">这一页把 Font Awesome 当作实心铅字来排：图标不靠图片，而是从本地字体文件里长出形状，像印社里一排等着上墨的工具铜模。</p>
+      <a class="lmy_switch" href="inconfont-2.html">去看 Lucide SVG 线刻版</a>
+    </header>
+
+    <section class="lmy_grid" aria-label="Font Awesome 图标样张">
+      <article class="lmy_specimen">
+        <span class="lmy_icon_cell"><span class="lmy_glyph lmy_fa_palette" aria-hidden="true">&#xf53f;</span></span>
+        <div><h2 class="lmy_name">调色盘</h2><p class="lmy_note">主色先落纸，剩下的颜色像校样一样慢慢追。</p></div>
+      </article>
+      <article class="lmy_specimen">
+        <span class="lmy_icon_cell"><span class="lmy_glyph lmy_fa_brush" aria-hidden="true">&#xf55d;</span></span>
+        <div><h2 class="lmy_name">画笔</h2><p class="lmy_note">笔触不负责装饰，它负责把品牌的手感留下来。</p></div>
+      </article>
+      <article class="lmy_specimen">
+        <span class="lmy_icon_cell"><span class="lmy_glyph lmy_fa_eye_dropper" aria-hidden="true">&#xf1fb;</span></span>
+        <div><h2 class="lmy_name">滴管</h2><p class="lmy_note">取色像取样，少一点猜测，多一点证据。</p></div>
+      </article>
+      <article class="lmy_specimen">
+        <span class="lmy_icon_cell"><span class="lmy_glyph lmy_fa_swatchbook" aria-hidden="true">&#xf5c3;</span></span>
+        <div><h2 class="lmy_name">色票本</h2><p class="lmy_note">每一格颜色都要能被叫出名字，才算进入系统。</p></div>
+      </article>
+      <article class="lmy_specimen">
+        <span class="lmy_icon_cell"><span class="lmy_glyph lmy_fa_wand" aria-hidden="true">&#xe2ca;</span></span>
+        <div><h2 class="lmy_name">修版火花</h2><p class="lmy_note">只保留一次让人记住的动作，其余都安静下来。</p></div>
+      </article>
+      <article class="lmy_specimen">
+        <span class="lmy_icon_cell"><span class="lmy_glyph lmy_fa_layers" aria-hidden="true">&#xf5fd;</span></span>
+        <div><h2 class="lmy_name">图层</h2><p class="lmy_note">错版不是混乱，是让每一层油墨保留位置。</p></div>
+      </article>
+      <article class="lmy_specimen">
+        <span class="lmy_icon_cell"><span class="lmy_glyph lmy_fa_pen" aria-hidden="true">&#xf5ad;</span></span>
+        <div><h2 class="lmy_name">笔尖</h2><p class="lmy_note">线要写到点上，文案也只说用户需要知道的事。</p></div>
+      </article>
+      <article class="lmy_specimen">
+        <span class="lmy_icon_cell"><span class="lmy_glyph lmy_fa_stamp" aria-hidden="true">&#xf5bf;</span></span>
+        <div><h2 class="lmy_name">印章</h2><p class="lmy_note">盖下去就是结论：清楚、直接、不再解释。</p></div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,916 @@
+/* ================= 全局重置与基础样式 ================= */
+.icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background-color: #dcdcdc;
+    /* 偏灰底色 */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.app-container {
+    width: 100%;
+    height: 100vh;
+    background-color: #f4f5f7;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    box-shadow: none; /* PC全屏去掉手机外阴影 */
+}
+
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+/* ===== 响应式适配：PC大屏自适应 ===== */
+@media (min-width: 768px) {
+    .book-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    }
+    .category-scroll, .header, .toolbar, .content-scroll {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+}
+@media (min-width: 1200px) {
+    .book-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    }
+}
+
+
+/* ================= 公共组件 ================= */
+/* 底部导航栏 */
+.bottom-nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 56px;
+    background-color: #fff;
+    border-top: 1px solid #eaeaea;
+    flex-shrink: 0;
+    padding-bottom: env(safe-area-inset-bottom);
+    z-index: 10;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    text-decoration: none;
+    color: #999;
+    font-size: 10px;
+    height: 100%;
+}
+
+.nav-item.active {
+    color: #2a7fff;
+}
+
+.nav-icon {
+    font-size: 20px;
+    margin-bottom: 2px;
+    font-style: normal;
+    fill: currentColor;
+}
+.nav-item svg.nav-icon {
+    width: 22px;
+    height: 22px;
+    fill: currentColor;
+    stroke: currentColor;
+}
+.nav-item svg.nav-icon * {
+    fill: currentColor !important;
+    stroke: currentColor !important;
+}
+
+/* 顶部搜索框 */
+.header {
+    padding: 12px 16px 8px;
+    background-color: #f4f5f7;
+    flex-shrink: 0;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    background-color: #e6e7e9;
+    border-radius: 8px;
+    padding: 8px 12px;
+}
+
+.search-icon {
+    width: 16px;
+    height: 16px;
+    fill: #999;              /* 图标线条颜色 */
+    margin-right: 8px;
+    flex-shrink: 0;
+}
+
+
+.search-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    outline: none;
+    color: #333;
+    font-size: 14px;
+}
+
+.search-input::placeholder {
+    color: #999;
+}
+
+.search-divider {
+    width: 1px;
+    height: 16px;
+    background-color: #d1d1d1;
+    margin: 0 12px;
+}
+
+.search-action {
+    color: #666;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+/* 书籍封面网格 */
+.book-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.book-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.book-cover-wrap { 
+    position: relative; 
+    width: 100%; 
+    aspect-ratio: 3 / 4; 
+    border-radius: 0; /* 取消圆角 */
+    overflow: hidden; 
+    background-color: #e0e0e0; 
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08); 
+}
+
+
+.book-placeholder-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #aaa;
+    text-align: center;
+}
+
+/* =========【修改1：书名加粗】========= */
+.book-title {
+    margin-top: 8px;
+    font-size: 13px;
+    color: #333;
+    line-height: 1.4;
+    font-weight: bold;
+    /* 加粗 */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* 通用卡片 */
+.card {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.content-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 16px 20px;
+}
+
+/* ================= 1. 主页（书架页）专属样式 ================= */
+/* =========【修改2：书架、导入、选择文字改为灰色】========= */
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px 12px;
+    flex-shrink: 0;
+}
+
+.toolbar-title {
+    font-size: 20px;
+    font-weight: 500;
+    color: #666;
+}
+
+/*书架文字灰色，取消粗体 */
+.toolbar-actions {
+    display: flex;
+    gap: 16px;
+}
+
+.toolbar-btn {
+    font-size: 14px;
+    color: #666;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+/* =========【修改3：分类标签，删掉蓝色下划线！】========= */
+.category-scroll {
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 0 16px;
+    margin-bottom: 16px;
+    flex-shrink: 0;
+}
+
+.category-item {
+    font-size: 14px;
+    color: #666;
+    margin-right: 24px;
+    padding-bottom: 8px;
+    position: relative;
+    text-decoration: none;
+}
+
+.category-item.active {
+    color: #2a7fff;
+    font-weight: normal;
+}
+
+/* active仅文字变蓝，不加粗 */
+.category-item.active::after {
+    content: none;
+}
+
+/* 移除底部蓝条！ */
+
+.finish-tag {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: #ffb342;
+    /* 变淡的橙色，不再深橙 */
+    color: #fff;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-bottom-left-radius: 0px;
+    /* 取消圆角 */
+}
+
+/* ================= 2. 阅读/发现页专属样式 ================= */
+.tab-scroll {
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 0 16px;
+    margin-bottom: 12px;
+    flex-shrink: 0;
+}
+
+.tab-item {
+    font-size: 14px;
+    color: #333;
+    margin-right: 12px;
+    padding: 6px 12px;
+    background-color: #fff;
+    border-radius: 16px;
+    text-decoration: none;
+    border: 1px solid #eaeaea;
+}
+
+.tab-item.active {
+    color: #ff4d4f;
+    background-color: #fff5f5;
+    border-color: #ffcccc;
+}
+
+.reading-cards {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.reading-stat {
+    flex: 1;
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.stat-title {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 4px;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: 600;
+    color: #111;
+}
+
+.stat-unit {
+    font-size: 12px;
+    font-weight: normal;
+}
+
+.stat-days {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 16px;
+}
+
+.day-item {
+    font-size: 10px;
+    color: #999;
+    text-align: center;
+}
+
+.recent-books {
+    flex: 1;
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 12px;
+    display: flex;
+    gap: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.recent-book-cover {
+    width: 60px;
+    height: 80px;
+    border-radius: 4px;
+    background-color: #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: #aaa;
+    flex-shrink: 0;
+}
+
+.section-header {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: #222;
+}
+
+.book-tag {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    font-size: 10px;
+    padding: 2px 0;
+    text-align: center;
+    backdrop-filter: blur(2px);
+}
+.tag-blue {
+    background: #2a7fff;
+}
+.tag-green {
+    background: #00b578;
+}
+/* 新增：书籍列表和按钮之间的空隙 */
+.book-grid-readpage {
+    margin-bottom: 24px;
+}
+.refresh-btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: #e6e7e9;
+    border-radius: 8px;
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+    border: none;
+    margin-top: 16px;  /* ↑ 新增上边距，拉开和上面书籍的距离 */
+    margin-bottom: 20px;
+    text-decoration: none;
+}
+
+
+/* ================= 3. 书友页专属样式 ================= */
+.top-tabs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px 0;
+    flex-shrink: 0;
+    font-size: 16px;
+    font-weight: 500;
+    color: #666;
+}
+
+.top-tab {
+    margin: 0 20px;
+    padding-bottom: 4px;
+    cursor: pointer;
+    position: relative;
+}
+
+.top-tab.active {
+    color: #2a7fff;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.sub-tabs {
+    display: flex;
+    align-items: center;
+    background-color: #eaeaea;
+    border-radius: 20px;
+    padding: 2px;               /* 上下再缩：4px→2px，整体更细 */
+    margin: 0 16px 12px;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+.sub-tab {
+    font-size: 14px;
+    color: #666;
+    flex: 1;                 /* 五个按钮均分，吃满竖线左侧空间 */
+    text-align: center;
+    padding: 4px 0;
+    margin-right: 0;          /* 去掉大 margin，避免溢出 */
+    background-color: transparent;
+    border-radius: 14px;
+    text-decoration: none;
+}
+.icon-plus {
+    flex-shrink: 0;
+    font-size: 16px;
+    font-weight: 300;
+    padding: 4px 12px;
+    margin-left: auto;
+    color: #666;
+    position: relative;          /* 配合 ::before 画竖线 */
+}
+
+.sub-tab.active {
+    background-color: #fff;
+    color: #000;
+    font-weight: 600;
+}
+
+.icon-plus::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 16px;                /* 固定 16px 高的竖线，居中 */
+    background-color: #ccc;
+}
+
+
+.post-card {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #ccc;
+    margin-right: 12px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: #fff;
+}
+
+.post-meta {
+    flex: 1;
+}
+
+.post-author {
+    font-size: 13px;
+    color: #c09453;        /* 金色，H.F. 那个颜色 */
+    font-weight: 500;
+}
+
+.post-time {
+    font-size: 12px;
+    color: #999;
+    float: right;
+}
+
+.post-content {
+    font-size: 15px;
+    color: #333;
+    line-height: 1.6;
+    margin-bottom: 12px;
+    word-wrap: break-word;
+}
+
+.post-tags {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.post-tag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    font-size: 12px;
+    color: #666;
+    background-color: #f2f2f2;
+    padding: 4px 12px;
+    border-radius: 16px;
+    text-decoration: none;
+}
+
+
+.post-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 12px;
+}
+
+.action-btn {
+    display: flex;
+    align-items: center;
+    color: #999;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.action-icon {
+    margin-right: 4px;
+    font-size: 16px;
+}
+
+.action-btn svg.action-icon {
+    width: 18px;
+    height: 18px;
+    fill: #999;
+    margin-right: 4px;
+}
+
+.action-count {
+    color: #999;
+}
+
+/* ================= 4. 我/个人中心专属样式 ================= */
+.header-icons {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px;
+    font-size: 20px;
+    color: #333;
+    flex-shrink: 0;
+}
+.header-icon {
+    width: 22px;
+    height: 22px;
+    fill: #333;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    padding: 0 16px 20px;
+    flex-shrink: 0;
+}
+
+.user-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #666;
+    margin-right: 16px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 12px;
+    overflow: hidden; 
+}
+
+
+.user-name {
+    font-size: 20px;
+    font-weight: 600;
+    color: #222;
+    display: flex;
+    align-items: center;
+}
+
+.user-level {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 8px;
+    background-color: #f2f3f5;
+    border: 1.5px solid #c0c3c8;
+    border-radius: 999px;
+    padding: 2px 10px 2px 4px;
+    font-size: 12px;
+    color: #555;
+    transform: translateY(3px);   /* 整个框+圆形下移 3px */
+}
+
+.level-star {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: #888;
+    color: #fff;
+    display: flex;
+    align-items: center;      /* 先居中 */
+    justify-content: center;
+    margin-right: 4px;
+    overflow: hidden;
+}
+.star-char {
+    font-size: 11px;
+    line-height: 1;
+    margin-bottom: 6px;       /* 关键：把星号整体上移 3px，不再偏下 */
+}
+
+.user-arrow {
+    margin-left: auto;
+    color: #ccc;
+    font-size: 18px;
+}
+
+.vip-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.vip-left {
+    display: flex;
+    align-items: center;
+}
+
+.vip-icon {
+    width: 24px;               /* 由 32px 缩小，与文字同高 */
+    height: 24px;
+    background-color: #fadb14;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    margin-right: 10px;
+    font-size: 14px;           /* ∞ 符号缩小 */
+    line-height: 1;            /* 配合 flex 让 ∞ 严格居中 */
+}
+.vip-text {
+    font-size: 14px;           /* “成为付费会员”缩小（原 16px） */
+    font-weight: 500;
+}
+.vip-right {
+    font-size: 12px;           /* “首月特惠 9 元/月”缩小（原 13px） */
+    color: #666;
+    display: flex;
+    align-items: center;
+}
+.vip-price {
+    color: #3b3b3b;
+    font-size: 14px;           /* “9”缩小（原 16px） */
+    font-weight: 600;
+    margin: 0 2px;
+}
+
+
+.grid-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.grid-card {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    align-items: flex-start;   /* 由 center 改为 flex-start */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.grid-card-icon {
+    margin-right: 12px;         /* 图标单独设置，控制与文字盒子的间距 */
+    font-size: 22px;
+    flex-shrink: 0;             /* 图标不缩放 */
+}
+.grid-card-icon.yellow { color: #fadb14; }
+.grid-card-icon.orange { color: #ff7a45; }
+
+/* 新增：文字盒子，标题和副标题在这里垂直排列，天然对齐 */
+.grid-card-text {
+    display: flex;
+    flex-direction: column;
+}
+.grid-card-title {
+    font-size: 16px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+}
+.grid-card-sub {
+    font-size: 12px;
+    color: #999;
+    margin-top: 4px;
+}
+
+
+
+.stats-list {
+    padding: 0;
+}
+
+.stats-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.stats-row:last-child {
+    border-bottom: none;
+}
+
+.stats-row-left {
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    color: #333;
+}
+
+.stats-row-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #ff7a45;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 12px;
+    margin-right: 12px;
+}
+
+.stats-row-icon.blue {
+    background-color: #2a7fff;
+}
+
+.stats-row-right {
+    font-size: 14px;
+    color: #333;
+    font-weight: 500;
+}
+
+.stats-row-right .sub-text {
+    font-size: 12px;
+    color: #999;
+    font-weight: normal;
+    margin-left: 4px;
+}
+
+.data-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+.data-item {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    align-items: center;        /* 图标和文字盒子居中对齐 */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+/* 图标：圆形彩色背景，单独修饰 */
+.data-item-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 15px;
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+.data-item-icon.green { background-color: #3ecf8e; }   /* 在读 青绿 */
+.data-item-icon.blue { background-color: #2a7fff; }     /* 读完 蓝 */
+.data-item-icon.lightblue { background-color: #40a9ff; }/* 笔记 亮蓝 */
+.data-item-icon.purple { background-color: #7b9cff; }    /* 订阅 淡紫蓝 */
+/* 右侧文字盒子：标题 + 累计小字，垂直对齐 */
+.data-item-text {
+    display: flex;
+    flex-direction: column;
+}
+.data-item-title {
+    font-size: 15px;
+    font-weight: 700;           /* 黑体 */
+    color: #222;
+}
+.data-item-sub {
+    font-size: 12px;
+    color: #999;                /* 灰色小字 */
+    margin-top: 4px;
+}
+
+
+.list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 15px;
+    text-decoration: none;
+    color: #333;
+}
+
+.list-item:last-child {
+    border-bottom: none;
+}
+
+.list-item-left {
+    display: flex;
+    align-items: center;
+}
+
+.list-item-icon {
+    margin-right: 12px;
+    font-size: 18px;
+    color: #2a7fff;
+}
+
+.list-item-right {
+    color: #999;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+}

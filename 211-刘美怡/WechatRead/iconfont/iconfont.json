@@ -1,0 +1,72 @@
+{
+  "id": "5243979",
+  "name": "微信",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "16386797",
+      "name": "书籍",
+      "font_class": "biaoqiankuozhan_shuji-167",
+      "unicode": "eb1f",
+      "unicode_decimal": 60191
+    },
+    {
+      "icon_id": "689291",
+      "name": "书籍",
+      "font_class": "shuji",
+      "unicode": "e815",
+      "unicode_decimal": 59413
+    },
+    {
+      "icon_id": "2239102",
+      "name": "转发",
+      "font_class": "zhuanfa",
+      "unicode": "e628",
+      "unicode_decimal": 58920
+    },
+    {
+      "icon_id": "7708018",
+      "name": "爱心",
+      "font_class": "aixin",
+      "unicode": "e619",
+      "unicode_decimal": 58905
+    },
+    {
+      "icon_id": "13638679",
+      "name": "信",
+      "font_class": "xin",
+      "unicode": "e653",
+      "unicode_decimal": 58963
+    },
+    {
+      "icon_id": "48704774",
+      "name": "调节-copy",
+      "font_class": "tiaojie-copy",
+      "unicode": "e84d",
+      "unicode_decimal": 59469
+    },
+    {
+      "icon_id": "48704928",
+      "name": "星球-copy",
+      "font_class": "yuzhou-copy",
+      "unicode": "eb20",
+      "unicode_decimal": 60192
+    },
+    {
+      "icon_id": "305997",
+      "name": "搜索",
+      "font_class": "meitiku06",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "797263",
+      "name": "我",
+      "font_class": "wo",
+      "unicode": "e626",
+      "unicode_decimal": 58918
+    }
+  ]
+}
