@@ -6,18 +6,32 @@
   "description": "",
   "glyphs": [
     {
-      "icon_id": "16386797",
-      "name": "书籍",
-      "font_class": "biaoqiankuozhan_shuji-167",
-      "unicode": "eb1f",
-      "unicode_decimal": 60191
+      "icon_id": "48785429",
+      "name": "1",
+      "font_class": "a-505054099",
+      "unicode": "e600",
+      "unicode_decimal": 58880
     },
     {
-      "icon_id": "689291",
-      "name": "书籍",
-      "font_class": "shuji",
-      "unicode": "e815",
-      "unicode_decimal": 59413
+      "icon_id": "48785430",
+      "name": "505054309",
+      "font_class": "a-505054309",
+      "unicode": "e602",
+      "unicode_decimal": 58882
+    },
+    {
+      "icon_id": "48785646",
+      "name": "505061187",
+      "font_class": "a-505061187",
+      "unicode": "e603",
+      "unicode_decimal": 58883
+    },
+    {
+      "icon_id": "48785647",
+      "name": "505061188",
+      "font_class": "a-505061188",
+      "unicode": "e604",
+      "unicode_decimal": 58884
     },
     {
       "icon_id": "2239102",
@@ -48,25 +62,11 @@
       "unicode_decimal": 59469
     },
     {
-      "icon_id": "48704928",
-      "name": "星球-copy",
-      "font_class": "yuzhou-copy",
-      "unicode": "eb20",
-      "unicode_decimal": 60192
-    },
-    {
       "icon_id": "305997",
       "name": "搜索",
       "font_class": "meitiku06",
       "unicode": "e601",
       "unicode_decimal": 58881
-    },
-    {
-      "icon_id": "797263",
-      "name": "我",
-      "font_class": "wo",
-      "unicode": "e626",
-      "unicode_decimal": 58918
     }
   ]
 }

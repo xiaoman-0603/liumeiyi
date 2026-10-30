@@ -30,3 +30,8 @@
 - 使用模型：Kimi-K3
 - 提示词内容：
   > 创建一个项目技能skill，提交项目，将项目通过git commit并push到gitee仓库，gitee私人令牌[已省略];仓库地址:`https://gitee.com/jiang-jili/lmy.git`
+
+- 时间：2026-10-30 14:30:46（Asia/Shanghai）
+- 使用模型：DeepSeek-V4.1-Flash
+- 提示词内容：
+  > 创建技能skill：提交到github，将本项目提交commit并push到`https://github.com/xiaoman-0603/liumeiyi.git`，使用已设置公钥。
