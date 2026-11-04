@@ -66,3 +66,5 @@
 2026-11-04 14:30:00 | Kimi-K3 | 把这个文件提交到GitHub
 
 2026-11-04 14:34:00 | Kimi-K3 | 把 index.html 和 rank-tabs.html 提交到GitHub
+
+2026-11-04 14:38:00 | Kimi-K3 | 我想要page在线显示的链接。但没有index就没有page的链接。你给我解决
