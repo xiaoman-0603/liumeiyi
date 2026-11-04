@@ -64,3 +64,5 @@
 2026-11-04 14:26:00 | Kimi-K3 | 识别这个字体，把当前的宋体改成一样的（识别为黑体SimHei）
 
 2026-11-04 14:30:00 | Kimi-K3 | 把这个文件提交到GitHub
+
+2026-11-04 14:34:00 | Kimi-K3 | 把 index.html 和 rank-tabs.html 提交到GitHub
