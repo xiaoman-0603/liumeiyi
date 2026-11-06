@@ -18,6 +18,8 @@ For root HTML, open it in a browser; there is no automated check. Verify links a
 - Before acting on a prompt in this repo, append the prompt, Asia/Shanghai time, and model to `lmy_prompt.md`. Append only; never rewrite history or store tokens/secrets.
 - Prefix every custom CSS class, custom ID, CSS custom property, and JS variable with `lmy_` (e.g. `.lmy_page`, `--lmy_ink`). Do not rename library-generated names or SVG symbol IDs.
 - Every new HTML page needs a visible home link to its section's `index.html` (there is no repo-root `index.html`).
+- Every new HTML file starts with a header comment containing four items: `刘美怡`, creation time (Asia/Shanghai), the model used, and the page's function name, e.g. `<!-- 刘美怡 | 建立时间: 2026-11-04 13:34:07 | 使用大模型: Kimi-K3 | 功能名称: 移动端下导航 -->`.
+- Every JS function gets a brief comment above it stating the main feature it implements (Chinese, one line).
 - Keep icons local: `cdn/fontawesome/css/all.min.css` for font icons, `cdn/lucide/lucide.min.js` for SVG, `211-刘美怡/font/iconfont.css` for the project iconfont. Do not add remote CDN URLs.
 - Mobile bottom nav: four equal-width items, `position: fixed`, `left: 50%`, `transform: translateX(-50%)`, `width: min(100%, 430px)`, safe-area padding, one numeric badge and one red dot.
 - Authoritative details live in `.trae/skills/lmy-iconfont-pages/SKILL.md`; read it before editing iconfont pages.

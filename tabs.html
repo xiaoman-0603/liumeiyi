@@ -1,0 +1,115 @@
+<!-- 刘美怡 | 建立时间: 2026-11-04 13:41:37 | 使用大模型: Kimi-K3 | 功能名称: 新闻 Tab 选项卡 -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>新闻选项卡</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Microsoft YaHei", sans-serif;
+    background: #f0f2f5;
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 16px;
+  }
+  .lmy_home_link {
+    align-self: flex-start;
+    margin-bottom: 20px;
+    color: #1677ff;
+    text-decoration: none;
+    font-size: 14px;
+  }
+  .lmy_home_link:hover { text-decoration: underline; }
+  .lmy_tabs {
+    width: 100%;
+    max-width: 640px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, .08);
+    overflow: hidden;
+  }
+  .lmy_tab_bar {
+    display: flex;
+    border-bottom: 1px solid #e8e8e8;
+  }
+  .lmy_tab_btn {
+    flex: 1;
+    padding: 14px 0;
+    border: none;
+    background: none;
+    font-size: 15px;
+    cursor: pointer;
+    color: #666;
+    position: relative;
+    transition: color .2s;
+  }
+  .lmy_tab_btn:hover { color: #1677ff; }
+  .lmy_tab_btn.lmy_tab_active {
+    color: #1677ff;
+    font-weight: 600;
+  }
+  .lmy_tab_btn.lmy_tab_active::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -1px;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 3px;
+    border-radius: 2px;
+    background: #1677ff;
+  }
+  .lmy_panes { padding: 24px; }
+  .lmy_pane { display: none; }
+  .lmy_pane.lmy_pane_active { display: block; }
+  .lmy_pane h2 {
+    font-size: 18px;
+    margin-bottom: 12px;
+    color: #222;
+  }
+  .lmy_pane p {
+    font-size: 14px;
+    line-height: 1.8;
+    color: #555;
+  }
+</style>
+</head>
+<body>
+
+<a class="lmy_home_link" href="index.html">返回首页</a>
+
+<div class="lmy_tabs" data-lmy-tabs>
+  <div class="lmy_tab_bar" role="tablist">
+    <button class="lmy_tab_btn" data-lmy-tab="lmy_pane_cn" data-lmy-default role="tab">国内新闻</button>
+    <button class="lmy_tab_btn" data-lmy-tab="lmy_pane_prov" role="tab">省内新闻</button>
+    <button class="lmy_tab_btn" data-lmy-tab="lmy_pane_intl" role="tab">国际新闻</button>
+    <button class="lmy_tab_btn" data-lmy-tab="lmy_pane_hot" role="tab">最热新闻</button>
+  </div>
+  <div class="lmy_panes">
+    <section class="lmy_pane" id="lmy_pane_cn" data-lmy-pane role="tabpanel">
+      <h2>国内新闻</h2>
+      <p>这里是国内新闻内容区域，展示全国范围内的最新资讯与要闻。</p>
+    </section>
+    <section class="lmy_pane" id="lmy_pane_prov" data-lmy-pane role="tabpanel">
+      <h2>省内新闻</h2>
+      <p>这里是省内新闻内容区域，聚焦本省各地市的时事动态。</p>
+    </section>
+    <section class="lmy_pane" id="lmy_pane_intl" data-lmy-pane role="tabpanel">
+      <h2>国际新闻</h2>
+      <p>这里是国际新闻内容区域，报道全球热点事件与国际关系动态。</p>
+    </section>
+    <section class="lmy_pane" id="lmy_pane_hot" data-lmy-pane role="tabpanel">
+      <h2>最热新闻</h2>
+      <p>这里是最热新闻内容区域，汇总当前阅读量与讨论度最高的话题。</p>
+    </section>
+  </div>
+</div>
+
+<script src="js/lmy_tabs.js"></script>
+</body>
+</html>
