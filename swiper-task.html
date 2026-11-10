@@ -80,6 +80,29 @@
   .wy-back a{display:inline-block;text-decoration:none;color:#0f2b5b;font-size:14.5px;font-weight:bold;background:#fff;border:1px solid #dbe4ff;border-radius:999px;padding:10px 26px;transition:transform .2s,box-shadow .2s}
   .wy-back a:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(15,43,91,.15)}
 
+
+  /* 刘美怡 · 提示词迭代记录模块 */
+  .lmy_round{border:1px solid #e2e8f5;border-radius:14px;padding:18px 20px;margin-bottom:16px;background:#fbfcff}
+  .lmy_round.lmy_round_bad{border-color:#fecaca;background:#fff9f9}
+  .lmy_round.lmy_round_good{border-color:#bbf7d0;background:#f7fff9}
+  .lmy_round h3{font-size:16px;color:#0f2b5b;margin-bottom:12px}
+  .lmy_tag{display:inline-block;font-size:12px;padding:2px 10px;border-radius:999px;margin-left:8px;vertical-align:2px}
+  .lmy_tag.lmy_tag_bad{background:#fee2e2;color:#b91c1c}
+  .lmy_tag.lmy_tag_good{background:#dcfce7;color:#15803d}
+  .lmy_label{font-size:13px;font-weight:bold;color:#1d5bbf;margin:12px 0 6px}
+  .lmy_quote{background:#f1f5ff;border-left:4px solid #1d5bbf;padding:10px 14px;border-radius:0 8px 8px 0;font-size:13.5px;line-height:1.9;color:#1f2937}
+  .lmy_code{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;font-family:Consolas,monospace;font-size:13px;line-height:1.75;overflow-x:auto;white-space:pre;margin-top:6px}
+  .lmy_code .lmy_cm{color:#94a3b8}
+  .lmy_note{font-size:13px;color:#9a3412;line-height:1.9;margin-top:10px}
+  .lmy_note b{color:#c2410c}
+  .lmy_concl{background:#fffbea;border:1px solid #fde68a;border-radius:12px;padding:12px 16px;font-size:13.5px;line-height:1.9;color:#7c5e10;margin-top:6px}
+  .lmy_concl b{color:#b45309}
+  .lmy_qa dt{font-weight:bold;color:#0f2b5b;font-size:14px;margin-top:14px}
+  .lmy_qa dd{font-size:13.5px;color:#374151;line-height:1.9;margin-top:4px}
+  .lmy_shot{border:2px dashed #c7d8f8;border-radius:10px;padding:26px 16px;text-align:center;color:#93a4c4;font-size:13px;background:#f8faff;margin-top:10px}
+  .lmy_shot_img{border-style:solid;border-color:#e2e8f5;background:#fff;padding:10px}
+  .lmy_shot img{width:100%;display:block;border-radius:8px}
+
   footer{text-align:center;margin-top:34px;color:#9ca3af;font-size:13px;line-height:2}
 </style>
 </head>
@@ -204,12 +227,13 @@
       <span class="wy-star">⭐ 验证标准：基础分——轮播自动翻页；进阶分——点 cube 按钮变 3D 立方体、点 fade 变淡入淡出</span>
     </div>
     <div class="wy-fx">
-      <button class="wy-on" data-fx="slide">slide 平推（默认·稳重）</button>
+      <button data-fx="slide">slide 平推（稳重）</button>
       <button data-fx="fade">fade 淡入淡出（优雅）</button>
-      <button data-fx="cube">cube 3D 立方体（炫酷）</button>
+      <button class="wy-on" data-fx="cube">cube 3D 立方体（炫酷·默认）</button>
       <button data-fx="coverflow">coverflow 画廊堆叠（沉浸）</button>
       <button data-fx="flip">flip 翻页（复古）</button>
       <button data-fx="cards">cards 卡片（俏皮）</button>
+      <button data-fx="creative">creative 电影墙（第 7 种）</button>
     </div>
     <div class="wy-demo">
       <span class="wy-demo-tag">🎛️ 演示四 · 效果实验台（点按钮切换 effect）</span>
@@ -225,6 +249,195 @@
           <div class="swiper-pagination" id="wyPag4"></div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- 任务三 · 第六件展品：爱达·魔都号 + zoom 双击缩放 -->
+  <div class="wy-sec">
+    <div class="wy-sec-head">
+      <span class="wy-no">6</span>
+      <h2>第六件展品 · 爱达·魔都号<small>2024 年 1 月首航 · 首艘国产大型邮轮 · zoom 双击缩放</small></h2>
+    </div>
+    <div class="wy-req">
+      <h3>✍️ 任务三 要求</h3>
+      <p>新增第六件展品 <b>爱达·魔都号</b>，并加入本页此前没用过的 <code>zoom</code> 能力：双击图片放大，再双击还原。</p>
+      <span class="wy-star">⭐ 验证标准：双击任意一张图放大到 3 倍，再双击还原；圆点和自动播放照常工作</span>
+    </div>
+    <div class="wy-demo">
+      <span class="wy-demo-tag">🎛️ 演示五 · 双击图片缩放（zoom）</span>
+      <div class="wy-swiper">
+        <div class="swiper" id="lmySw5">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide"><div class="swiper-zoom-container"><img src="swiper-imgs/tiangong_1.jpg" alt="天宫空间站"></div><div class="wy-cap"><h3>天宫空间站</h3><p>双击图片放大查看</p></div></div>
+            <div class="swiper-slide"><div class="swiper-zoom-container"><img src="swiper-imgs/fuxing_1.jpg" alt="复兴号动车组"></div><div class="wy-cap"><h3>复兴号动车组</h3><p>350 km/h · 世界商业运营最高时速</p></div></div>
+            <div class="swiper-slide"><div class="swiper-zoom-container"><img src="swiper-imgs/c919_1.jpg" alt="C919大飞机"></div><div class="wy-cap"><h3>C919 大飞机</h3><p>2023 年商业首航 · 国产干线客机</p></div></div>
+            <div class="swiper-slide"><div class="swiper-zoom-container"><img src="swiper-imgs/fendouzhe_1.jpg" alt="奋斗者号"></div><div class="wy-cap"><h3>奋斗者号</h3><p>10909 米 · 万米深潜</p></div></div>
+            <div class="swiper-slide"><div class="swiper-zoom-container"><img src="swiper-imgs/fast_1.jpg" alt="中国天眼"></div><div class="wy-cap"><h3>中国天眼 FAST</h3><p>500 米口径 · 世界最大单口径射电望远镜</p></div></div>
+            <div class="swiper-slide"><div class="swiper-zoom-container"><img src="首艘国产大型邮轮.png" alt="爱达·魔都号"></div><div class="wy-cap"><h3>爱达·魔都号</h3><p>2024 年 1 月首航 · 首艘国产大型邮轮</p></div></div>
+          </div>
+          <div class="swiper-pagination" id="lmyPag5"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 任务一 · 提示词迭代记录（两轮提示词 + 两次 AI 代码 + 结论 + 答辩） -->
+  <div class="wy-sec">
+    <div class="wy-sec-head">
+      <span class="wy-no">AI</span>
+      <h2>任务一 · 提示词工程师<small>两轮提示词迭代 · 两次 AI 代码 · 一句话结论 · 答辩抽问</small></h2>
+    </div>
+    <p class="wy-txt">目标：让 AI 写出 <code>new Swiper('#wySw4', {...})</code> 配置，满足 <b>① 无缝循环 ② 3.2 秒自动翻页且手动操作后不停止 ③ 圆点分页器可点击 ④ 初始效果为 cube</b>。</p>
+
+    <!-- 第一轮 -->
+    <div class="lmy_round lmy_round_bad">
+      <h3>第 1 轮 <span class="lmy_tag lmy_tag_bad">有遗漏</span></h3>
+      <div class="lmy_label">我的提示词</div>
+      <div class="lmy_quote">生成新的Swiper('#wysw4'，{...}) 配置:① 无缝循环 ② 3.2 秒自动翻页且手动操作后不停止 ③ 圆点分页器可点击</div>
+      <div class="lmy_label">AI 给出的代码</div>
+      <pre class="lmy_code">var wySw4 = new Swiper("#wySw4", {
+  loop: true,<span class="lmy_cm">              // ① 无缝循环</span>
+  autoplay: {
+    delay: 3200,<span class="lmy_cm">           // ② 3.2 秒自动翻页</span>
+    disableOnInteraction: false,<span class="lmy_cm">  // ② 手动操作后不停止</span>
+  },
+  pagination: {
+    el: "#wyPag4",<span class="lmy_cm">         // ③ 圆点分页器</span>
+    clickable: true,<span class="lmy_cm">       // ③ 圆点可点击</span>
+  },
+  speed: 800,
+  effect: "slide",<span class="lmy_cm">         // 初始效果不是 cube</span>
+});</pre>
+      <div class="lmy_note"><b>存在的问题：</b>提示词漏掉了第 ④ 项“初始效果为 cube”，AI 按页面原有默认值给了 <code>effect: "slide"</code>；另外提示词里选择器写成小写 <code>#wysw4</code>，而页面真实 id 是 <code>wySw4</code>，照抄会匹配不到元素。</div>
+      <div class="lmy_concl"><b>第 1 轮一句话结论：</b>前三项参数正确，但初始效果不是 cube，需求未全部满足。</div>
+    </div>
+
+    <!-- 第二轮 -->
+    <div class="lmy_round lmy_round_good">
+      <h3>第 2 轮 <span class="lmy_tag lmy_tag_good">已补齐</span></h3>
+      <div class="lmy_label">我的提示词</div>
+      <div class="lmy_quote">默认初始效果需要是cube</div>
+      <div class="lmy_label">AI 修正后的代码</div>
+      <pre class="lmy_code">var wySw4 = new Swiper("#wySw4", {
+  loop: true,<span class="lmy_cm">                    // ① 无缝循环</span>
+  autoplay: {
+    delay: 3200,<span class="lmy_cm">                 // ② 每 3.2 秒自动翻页</span>
+    disableOnInteraction: false,<span class="lmy_cm"> // ② 手动操作后不停止</span>
+  },
+  pagination: {
+    el: "#wyPag4",<span class="lmy_cm">               // ③ 圆点分页器</span>
+    clickable: true,<span class="lmy_cm">             // ③ 圆点可点击跳转</span>
+  },
+  speed: 800,
+  effect: "cube",<span class="lmy_cm">                // ④ 初始效果 cube</span>
+});</pre>
+      <div class="lmy_note"><b>同步改动：</b>把效果按钮的默认高亮从 slide 移到 cube，让页面一打开按钮状态与初始效果一致。</div>
+      <div class="lmy_concl"><b>第 2 轮一句话结论：</b>补齐 <code>effect: "cube"</code> 后四项需求全部满足，循环、3.2 秒自动播放、手动后继续、圆点跳转均正常。</div>
+      <div class="lmy_shot lmy_shot_img"><img src="截图.png" alt="Swiper 演示四 cube 效果验证截图"></div>
+    </div>
+
+    <!-- 答辩 -->
+    <div class="lmy_round">
+      <h3>答辩抽问</h3>
+      <dl class="lmy_qa">
+        <dt>Q1：你的第一版提示词漏掉了哪个需求？</dt>
+        <dd>漏掉了“初始效果为 cube”这一项——只写了无缝循环、3.2 秒自动翻页（手动后不停）、圆点可点击三件事。</dd>
+        <dt>Q2：你是怎么在第二轮里“说清楚”的？</dt>
+        <dd>第二轮直接点名要改的参数和取值：“默认初始效果需要是cube”，不再让 AI 从上下文猜默认值，因此它把 <code>effect</code> 从 <code>"slide"</code> 明确改成了 <code>"cube"</code>。</dd>
+        <dt>Q3：AI 第一次给的代码错在哪？</dt>
+        <dd>错在 <code>effect</code> 用了 <code>"slide"</code>，与“初始效果为 cube”不符；另外我第一版提示词把选择器写成了小写 <code>#wysw4</code>，真实 id 是 <code>wySw4</code>（大小写敏感），AI 回答里帮我把大小写纠正回了 <code>#wySw4</code>。</dd>
+      </dl>
+    </div>
+  </div>
+
+  <!-- 任务二 · creative 仿写（第 7 种效果） -->
+  <div class="wy-sec">
+    <div class="wy-sec-head">
+      <span class="wy-no">7</span>
+      <h2>任务二 · creative 仿写<small>第 7 种效果 · 电影选片墙 · prev / next 追问</small></h2>
+    </div>
+    <p class="wy-txt">参考 <code>swiper/demo/257-effect-creative.html</code> 的<b>第一个示例</b>，在演示四新增第 7 个按钮 <b>creative 电影墙</b>：上一张向屏幕深处后退并缩小（透视 + 阴影），下一张从右侧滑入。</p>
+
+    <div class="lmy_round lmy_round_good">
+      <h3>我给 AI 的追问 <span class="lmy_tag lmy_tag_good">已实现</span></h3>
+      <div class="lmy_quote">参考 257-effect-creative 第一个示例的 creativeEffect 写法，加第 7 种效果；再用大白话解释：prev / next 的 transform 各控制什么？</div>
+      <div class="lmy_label">AI 给出的核心配置</div>
+      <pre class="lmy_code">creativeEffect: {
+  prev: {
+    shadow: true,
+    translate: [0, 0, -400],<span class="lmy_cm">    // 向屏幕里后退 400px</span>
+  },
+  next: {
+    translate: ["100%", 0, 0],<span class="lmy_cm"> // 停在右侧一屏宽处</span>
+  },
+},</pre>
+      <div class="lmy_label">用自己的话解释</div>
+      <p class="wy-txt"><b>prev</b> 控制“已经滑走的上一张”：translate 是 [X, Y, Z]，这里 Z 为 -400，表示往屏幕里面退 400px，有透视时看起来就变小了；shadow 给它补一层阴影，层次更像一叠卡片。<b>next</b> 控制“还没进来的下一张”：X 为 "100%"，按自身宽度算，等于把它放在右侧一整个 slide 宽的位置，滑进来时再线性回到 0。</p>
+    </div>
+
+    <div class="lmy_round">
+      <h3>答辩抽问</h3>
+      <dl class="lmy_qa">
+        <dt>Q1：transform 里的百分数是相对谁的？</dt>
+        <dd>相对幻灯片自己。Swiper 把这些字符串直接拼进 CSS 的 <code>translate3d()</code>，百分比位移按元素自身尺寸计算：X 相对 slide 自身宽度，Y 相对自身高度，不是相对视口或轮播容器。所以 next 的 <code>"100%"</code> 就是一张 slide 的宽度。</dd>
+        <dt>Q2：改一个数值让卡片转 20 度试试？</dt>
+        <dd>在 <code>prev</code> 里加一行 <code>rotate: [0, 20, 0]</code>（第二个值是绕 Y 轴的角度），上一张离场时就会转 20°；想更夸张可临时改成 45 再切回 20。</dd>
+      </dl>
+    </div>
+  </div>
+
+  <!-- 任务三 · 综合创作与技术答辩记录 -->
+  <div class="wy-sec">
+    <div class="wy-sec-head">
+      <span class="wy-no">AI</span>
+      <h2>任务三 · 综合创作 + 技术答辩<small>第六件展品 · 新能力 zoom · 与 AI 的关键对话</small></h2>
+    </div>
+    <p class="wy-txt">本页此前只用了 <code>loop</code>、<code>autoplay</code>、<code>pagination</code>、<code>navigation</code> 和 effect 系列；这次选课堂没讲过的 <b>zoom 双击缩放</b>，用在新增的第六件展品轮播上。</p>
+
+    <div class="lmy_round lmy_round_bad">
+      <h3>第 1 次对话 <span class="lmy_tag lmy_tag_bad">zoom 没生效</span></h3>
+      <div class="lmy_label">我的提示词</div>
+      <div class="lmy_quote">为光影展添加第六件展品“爱达·魔都号”（2024 年 1 月首航，横版 16:9 图片），选一个课堂没讲过的 Swiper 能力，用 zoom 双击缩放，给我完整的 slide 结构和初始化代码。</div>
+      <div class="lmy_label">AI 第一次给的代码（节选）</div>
+      <pre class="lmy_code">&lt;div class="swiper-slide"&gt;
+  &lt;img src="首艘国产大型邮轮.png" alt="爱达·魔都号"&gt;
+&lt;/div&gt;
+
+zoom: true,</pre>
+      <div class="lmy_note"><b>问题：</b>zoom 模块只对 <code>.swiper-zoom-container</code> 里的元素生效，图片直接放在 slide 里双击没有反应；<code>zoom: true</code> 也没把参数写清楚。</div>
+    </div>
+
+    <div class="lmy_round lmy_round_good">
+      <h3>第 2 次对话 <span class="lmy_tag lmy_tag_good">已修正</span></h3>
+      <div class="lmy_label">我的追问</div>
+      <div class="lmy_quote">双击图片没有任何变化，为什么？请按官方 zoom 的结构改好，并说明每个参数的作用。</div>
+      <div class="lmy_label">修正后的结构 + 配置</div>
+      <pre class="lmy_code">&lt;div class="swiper-slide"&gt;
+  &lt;div class="swiper-zoom-container"&gt;
+    &lt;img src="首艘国产大型邮轮.png" alt="爱达·魔都号"&gt;
+  &lt;/div&gt;
+  &lt;div class="wy-cap"&gt;...&lt;/div&gt;
+&lt;/div&gt;
+
+zoom: {
+  maxRatio: 3,   <span class="lmy_cm">// 最多放大 3 倍</span>
+  toggle: true,  <span class="lmy_cm">// 双击放大，再双击还原</span>
+},</pre>
+      <div class="lmy_note"><b>关键修复：</b>把图片包进 <code>.swiper-zoom-container</code>，并把 zoom 写成参数对象，双击缩放才真正工作。</div>
+    </div>
+
+    <div class="lmy_round">
+      <h3>答辩四问</h3>
+      <dl class="lmy_qa">
+        <dt>Q1：这段代码什么意思？</dt>
+        <dd><code>loop</code> 循环播放；<code>autoplay.delay</code> 每 4 秒翻一张，<code>disableOnInteraction: false</code> 让手动操作后继续；<code>zoom.maxRatio</code> 限制最大放大 3 倍，<code>toggle</code> 让双击在放大与还原之间切换；<code>pagination</code> 生成可点击的圆点。</dd>
+        <dt>Q2：AI 第一次给的不对、你改了什么？</dt>
+        <dd>第一次没把图片放进 <code>.swiper-zoom-container</code>，zoom 绑定不到元素，双击无反应；我按官方结构补了容器，并把 <code>zoom: true</code> 换成参数对象。</dd>
+        <dt>Q3：新参数的作用？</dt>
+        <dd><code>maxRatio</code> 控制放大上限（设为 3 就是最多 3 倍），<code>toggle</code> 控制双击是否在放大与还原之间切换；两者一起决定缩放手感。</dd>
+        <dt>Q4：现场把 delay 改成指定值并解释预期变化？</dt>
+        <dd>把 <code>delay: 4000</code> 改成 2000：每张停留时间减半，自动翻页变快；改成 6000 则变慢。只要 <code>disableOnInteraction: false</code> 不变，手动滑动后仍会继续自动播放。</dd>
+      </dl>
     </div>
   </div>
 
@@ -274,23 +487,35 @@ var wySw3 = new Swiper("#wySw3", {
       },
     });
 
+  // 刘美怡：creative（第 7 种效果）参数，照 257-effect-creative 第一个示例
+var lmyCreativeEffect = {
+  prev: {
+    shadow: true,
+    translate: [0, 0, -400],   // 上一张后退 400px，透视下变小
+  },
+  next: {
+    translate: ["100%", 0, 0], // 下一张停在右侧一个自身宽度处
+  },
+};
+
   // ── 任务 4：初始化 #wySw4，循环 + 3.2 秒自动播放 + 圆点 + 初始 effect ──
 var wySw4 = new Swiper("#wySw4", {
-  loop: true,
-  speed: 800,
-  effect: "slide",
+  loop: true,              // ① 无缝循环
   autoplay: {
-    delay: 3200,
-    disableOnInteraction: false,
+    delay: 3200,           // ② 每 3.2 秒自动翻页
+    disableOnInteraction: false,  // ② 手动滑动后不停止
   },
   pagination: {
-    el: "#wyPag4",
-    clickable: true,
+    el: "#wyPag4",         // ③ 圆点分页器
+    clickable: true,       // ③ 圆点可点击跳转
   },
+  speed: 800,              // 任务 4 要求的动画时长
+  effect: "cube",         // 任务 4 要求的初始效果
+  creativeEffect: lmyCreativeEffect,  // 任务二：第 7 种效果的参数
 });
 
 
-  // ── 任务 4 进阶：补全按钮点击事件，实现六种效果实时切换 ──
+  // ── 任务 4 进阶：补全按钮点击事件，实现七种效果实时切换 ──
   // 提示 1：动态换 effect 只改参数是无效的，必须销毁旧实例再重建（destroy + new）
   // 提示 2：按钮上已有 data-fx 属性，用 btn.dataset.fx 读取要切换的效果名
   document.querySelectorAll('.wy-fx button').forEach(function(btn){
@@ -309,6 +534,7 @@ var wySw4 = new Swiper("#wySw4", {
         loop: true,
         speed: 800,
         effect: btn.dataset.fx,
+        creativeEffect: lmyCreativeEffect,
         autoplay: {
           delay: 3200,
           disableOnInteraction: false,
@@ -321,6 +547,25 @@ var wySw4 = new Swiper("#wySw4", {
 
     });
   });
+
+  // ── 任务三：初始化 #lmySw5，第六件展品 + 课堂没讲过的 zoom 双击缩放 ──
+var lmySw5 = new Swiper("#lmySw5", {
+  loop: true,
+  speed: 700,
+  initialSlide: 5,        // 打开页面先显示“爱达·魔都号”
+  autoplay: {
+    delay: 4000,          // 每 4 秒自动翻页
+    disableOnInteraction: false,
+  },
+  pagination: {
+    el: "#lmyPag5",
+    clickable: true,
+  },
+  zoom: {
+    maxRatio: 3,          // 最多放大 3 倍
+    toggle: true,         // 双击放大，再双击还原
+  },
+});
 </script>
 </body>
 </html>
