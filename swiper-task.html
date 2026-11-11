@@ -66,6 +66,9 @@
     --swiper-navigation-size:18px;transition:background .2s;
   }
   .wy-swiper .swiper-button-next:hover,.wy-swiper .swiper-button-prev:hover{background:#e8890c}
+  /* 演示五 · 滚动条配色（080-scrollbar，替代圆点分页器） */
+  .wy-swiper .swiper-scrollbar{position:relative;height:9px;margin-top:12px;background:#e8ecf5;border-radius:999px}
+  .wy-swiper .swiper-scrollbar-drag{background:linear-gradient(135deg,#0f2b5b,#1d5bbf);border-radius:999px}
 
   /* 效果切换按钮 */
   .wy-fx{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 2px}
@@ -261,10 +264,11 @@
     <div class="wy-req">
       <h3>✍️ 任务三 要求</h3>
       <p>新增第六件展品 <b>爱达·魔都号</b>，并加入本页此前没用过的 <code>zoom</code> 能力：双击图片放大，再双击还原。</p>
-      <span class="wy-star">⭐ 验证标准：双击任意一张图放大到 3 倍，再双击还原；圆点和自动播放照常工作</span>
+      <span class="wy-star">⭐ 验证标准：双击任意一张图放大到 3 倍，再双击还原；自动播放照常工作</span>
+      <p>🔄 后续迭代：参照 <code>swiper/demo/080-scrollbar.html</code> 与 <code>260-keyboard-control.html</code>，去掉圆点分页器，改为<b>可拖动滚动条 + 键盘方向键</b>切换，zoom 双击缩放保留。</p>
     </div>
     <div class="wy-demo">
-      <span class="wy-demo-tag">🎛️ 演示五 · 双击图片缩放（zoom）</span>
+      <span class="wy-demo-tag">🎛️ 演示五 · zoom 双击缩放 · 滚动条/键盘切换（无圆点）</span>
       <div class="wy-swiper">
         <div class="swiper" id="lmySw5">
           <div class="swiper-wrapper">
@@ -275,8 +279,8 @@
             <div class="swiper-slide"><div class="swiper-zoom-container"><img src="swiper-imgs/fast_1.jpg" alt="中国天眼"></div><div class="wy-cap"><h3>中国天眼 FAST</h3><p>500 米口径 · 世界最大单口径射电望远镜</p></div></div>
             <div class="swiper-slide"><div class="swiper-zoom-container"><img src="首艘国产大型邮轮.png" alt="爱达·魔都号"></div><div class="wy-cap"><h3>爱达·魔都号</h3><p>2024 年 1 月首航 · 首艘国产大型邮轮</p></div></div>
           </div>
-          <div class="swiper-pagination" id="lmyPag5"></div>
         </div>
+        <div class="swiper-scrollbar" id="lmySb5"></div>
       </div>
     </div>
   </div>
@@ -388,21 +392,26 @@ var wySw4 = new Swiper("#wySw4", {
     });
   });
 
-  // ── 任务三：初始化 #lmySw5，第六件展品 + 课堂没讲过的 zoom 双击缩放 ──
+  // ── 任务三：初始化 #lmySw5，第六件展品 · zoom 双击缩放 + 滚动条/键盘切换（无圆点） ──
 var lmySw5 = new Swiper("#lmySw5", {
   loop: true,
   speed: 700,
   initialSlide: 5,        // 打开页面先显示“爱达·魔都号”
+  grabCursor: true,       // 悬停变抓手光标（190-grab-cursor）
   autoplay: {
     delay: 4000,          // 每 4 秒自动翻页
     disableOnInteraction: false,
   },
-  pagination: {
-    el: "#lmyPag5",
-    clickable: true,
+  keyboard: {
+    enabled: true,        // 键盘方向键切换（260-keyboard-control）
+  },
+  scrollbar: {
+    el: "#lmySb5",        // 用滚动条替代圆点分页器（080-scrollbar）
+    draggable: true,      // 滚动条可拖动换片
+    hide: false,
   },
   zoom: {
-    maxRatio: 3,          // 最多放大 3 倍
+    maxRatio: 3,          // 最多放大 3 倍（保留）
     toggle: true,         // 双击放大，再双击还原
   },
 });

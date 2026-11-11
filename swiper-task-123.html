@@ -67,8 +67,8 @@
   <div class="wy-head">
     <span class="wy-badge">高 职 · 高 级 网 页 设 计 · 作 业 任 务 1-3 · 答 辩 记 录</span>
     <h1>Swiper 轮播组件 · 任务 1-3 <b>AI 协作与答辩记录</b></h1>
-    <p>本页自 <a href="swiper-task.html">swiper-task.html</a> 分离而来，汇总三次任务的<b>提示词、AI 代码、修改过程与答辩抽问</b>：任务 1 · 提示词工程师、任务 2 · creative 仿写、任务 3 · 综合创作（第六件展品 + zoom）。各轮播的现场演示仍在任务演示页。</p>
-    <div class="wy-goals"><i>任务 1 · 提示词工程师</i><i>任务 2 · creative 仿写</i><i>任务 3 · 综合创作 · zoom</i></div>
+    <p>本页自 <a href="swiper-task.html">swiper-task.html</a> 分离而来，汇总三次任务的<b>提示词、AI 代码、修改过程与答辩抽问</b>：任务 1 · 提示词工程师、任务 2 · creative 仿写、任务 3 · 综合创作（第六件展品 + zoom + 滚动条/键盘切换）。各轮播的现场演示仍在任务演示页。</p>
+    <div class="wy-goals"><i>任务 1 · 提示词工程师</i><i>任务 2 · creative 仿写</i><i>任务 3 · 综合创作 · zoom + 滚动条/键盘</i></div>
   </div>
 
   <!-- 任务一 · 提示词迭代记录（两轮提示词 + 两次 AI 代码 + 结论 + 答辩） -->
@@ -180,53 +180,71 @@
   <div class="wy-sec">
     <div class="wy-sec-head">
       <span class="wy-no">AI</span>
-      <h2>任务三 · 综合创作 + 技术答辩<small>第六件展品 · 新能力 zoom · 与 AI 的关键对话</small></h2>
+      <h2>任务三 · 综合创作 + 技术答辩<small>第六件展品 · zoom 双击缩放 + 滚动条/键盘切换 · 两轮真实提示词</small></h2>
     </div>
-    <p class="wy-txt">演示页（<a href="swiper-task.html">swiper-task.html</a>）此前只用了 <code>loop</code>、<code>autoplay</code>、<code>pagination</code>、<code>navigation</code> 和 effect 系列；这次选课堂没讲过的 <b>zoom 双击缩放</b>，用在新增的第六件展品轮播上。　现场演示：<a href="swiper-task.html">swiper-task.html · 演示五</a></p>
+    <p class="wy-txt">演示页（<a href="swiper-task.html">swiper-task.html</a>）此前只用了 <code>loop</code>、<code>autoplay</code>、<code>pagination</code>、<code>navigation</code> 和 effect 系列。第 1 轮给第六件展品选了没讲过的 <b>zoom 双击缩放</b>；第 2 轮参照 <code>swiper/demo</code> 示例把切换方式改掉。　现场演示：<a href="swiper-task.html">swiper-task.html · 演示五</a></p>
 
-    <div class="lmy_round lmy_round_bad">
-      <h3>第 1 次对话 <span class="lmy_tag lmy_tag_bad">zoom 没生效</span></h3>
-      <div class="lmy_label">我的提示词</div>
-      <div class="lmy_quote">为光影展添加第六件展品“爱达·魔都号”（2024 年 1 月首航，横版 16:9 图片），选一个课堂没讲过的 Swiper 能力，用 zoom 双击缩放，给我完整的 slide 结构和初始化代码。</div>
-      <div class="lmy_label">AI 第一次给的代码（节选）</div>
-      <pre class="lmy_code">&lt;div class="swiper-slide"&gt;
-  &lt;img src="首艘国产大型邮轮.png" alt="爱达·魔都号"&gt;
-&lt;/div&gt;
-
-zoom: true,</pre>
-      <div class="lmy_note"><b>问题：</b>zoom 模块只对 <code>.swiper-zoom-container</code> 里的元素生效，图片直接放在 slide 里双击没有反应；<code>zoom: true</code> 也没把参数写清楚。</div>
-    </div>
-
+    <!-- 第 1 轮 -->
     <div class="lmy_round lmy_round_good">
-      <h3>第 2 次对话 <span class="lmy_tag lmy_tag_good">已修正</span></h3>
-      <div class="lmy_label">我的追问</div>
-      <div class="lmy_quote">双击图片没有任何变化，为什么？请按官方 zoom 的结构改好，并说明每个参数的作用。</div>
-      <div class="lmy_label">修正后的结构 + 配置</div>
-      <pre class="lmy_code">&lt;div class="swiper-slide"&gt;
-  &lt;div class="swiper-zoom-container"&gt;
-    &lt;img src="首艘国产大型邮轮.png" alt="爱达·魔都号"&gt;
-  &lt;/div&gt;
-  &lt;div class="wy-cap"&gt;...&lt;/div&gt;
-&lt;/div&gt;
-
-zoom: {
-  maxRatio: 3,   <span class="lmy_cm">// 最多放大 3 倍</span>
-  toggle: true,  <span class="lmy_cm">// 双击放大，再双击还原</span>
-},</pre>
-      <div class="lmy_note"><b>关键修复：</b>把图片包进 <code>.swiper-zoom-container</code>，并把 zoom 写成参数对象，双击缩放才真正工作。</div>
+      <h3>第 1 轮 · 加第六件展品 + zoom <span class="lmy_tag lmy_tag_good">已实现</span></h3>
+      <div class="lmy_label">我的提示词</div>
+      <div class="lmy_quote">照片我已经生成好了 d:/网页制作/首艘国产大型邮轮.png。挑选此html没有运用过的swiper能力。</div>
+      <div class="lmy_label">AI 给出的代码</div>
+      <pre class="lmy_code">var lmySw5 = new Swiper("#lmySw5", {
+  loop: true,
+  speed: 700,
+  initialSlide: 5,<span class="lmy_cm">        // 打开页面先显示“爱达·魔都号”</span>
+  autoplay: {
+    delay: 4000,<span class="lmy_cm">          // 每 4 秒自动翻页</span>
+    disableOnInteraction: false,
+  },
+  pagination: {
+    el: "#lmyPag5",<span class="lmy_cm">      // 当时还配了圆点分页器（第 2 轮才删）</span>
+    clickable: true,
+  },
+  zoom: {
+    maxRatio: 3,<span class="lmy_cm">          // 最多放大 3 倍</span>
+    toggle: true,<span class="lmy_cm">         // 双击放大，再双击还原</span>
+  },
+});</pre>
+      <div class="lmy_note"><b>说明：</b>AI 在本页没用过的能力里选了 <b>zoom</b>；图片必须包进 <code>.swiper-zoom-container</code> 才能双击缩放（照官方 <code>400-zoom.html</code> 示例的结构）。验证时还踩过一个真实的坑：自动化模拟的双击事件没触发 zoom，最后用临时测试页调用 <code>zoom.in()</code> API 确认配置正确——真实浏览器里双击有效。</div>
+      <div class="lmy_concl"><b>第 1 轮一句话结论：</b>第六件展品「爱达·魔都号」上线，双击放大 3 倍、再双击还原，圆点和自动播放照常工作。</div>
     </div>
 
+    <!-- 第 2 轮 -->
+    <div class="lmy_round lmy_round_good">
+      <h3>第 2 轮 · 按示例换掉圆点 <span class="lmy_tag lmy_tag_good">已实现</span></h3>
+      <div class="lmy_label">我的提示词</div>
+      <div class="lmy_quote">根据 d:/网页制作/swiper/demo 下的示例，使用 swiper-task.html 中没有运用过的效果，把第六件展品的演示效果也做改变。比如不要圆点选择器、平移切换。但是当前的 zoom 效果需要保留。</div>
+      <div class="lmy_label">AI 修改的配置（删 + 增）</div>
+      <pre class="lmy_code">pagination: { el: "#lmyPag5", ... },<span class="lmy_cm">  // 删：圆点分页器整个去掉</span>
+
+grabCursor: true,<span class="lmy_cm">                  // 增：抓手光标（190-grab-cursor）</span>
+keyboard: {
+  enabled: true,<span class="lmy_cm">                   // 增：方向键切换（260-keyboard-control）</span>
+},
+scrollbar: {
+  el: "#lmySb5",<span class="lmy_cm">                   // 增：滚动条替代圆点（080-scrollbar）</span>
+  draggable: true,<span class="lmy_cm">                // 滚动条可拖动换片</span>
+  hide: false,
+},
+zoom: { maxRatio: 3, toggle: true },<span class="lmy_cm"> // zoom 原样保留</span></pre>
+      <div class="lmy_note"><b>同步改动：</b>HTML 删掉 <code>#lmyPag5</code>，在轮播容器外新增 <code>&lt;div class="swiper-scrollbar" id="lmySb5"&gt;</code>，滚动条另加了配色。浏览器实测：圆点消失、滚动条带拖拽块、按 ArrowRight 时 activeIndex 4→5 切换成功、zoom 配置未动。</div>
+      <div class="lmy_concl"><b>第 2 轮一句话结论：</b>演示五改为「滚动条拖动 + 键盘方向键」切换，圆点移除，zoom 双击缩放完整保留。</div>
+    </div>
+
+    <!-- 答辩 -->
     <div class="lmy_round">
       <h3>答辩四问</h3>
       <dl class="lmy_qa">
         <dt>Q1：这段代码什么意思？</dt>
-        <dd><code>loop</code> 循环播放；<code>autoplay.delay</code> 每 4 秒翻一张，<code>disableOnInteraction: false</code> 让手动操作后继续；<code>zoom.maxRatio</code> 限制最大放大 3 倍，<code>toggle</code> 让双击在放大与还原之间切换；<code>pagination</code> 生成可点击的圆点。</dd>
-        <dt>Q2：AI 第一次给的不对、你改了什么？</dt>
-        <dd>第一次没把图片放进 <code>.swiper-zoom-container</code>，zoom 绑定不到元素，双击无反应；我按官方结构补了容器，并把 <code>zoom: true</code> 换成参数对象。</dd>
-        <dt>Q3：新参数的作用？</dt>
-        <dd><code>maxRatio</code> 控制放大上限（设为 3 就是最多 3 倍），<code>toggle</code> 控制双击是否在放大与还原之间切换；两者一起决定缩放手感。</dd>
+        <dd><code>loop</code> 循环播放；<code>autoplay.delay</code> 每 4 秒翻一张，<code>disableOnInteraction: false</code> 让手动操作后继续；<code>scrollbar.el</code> 绑定滚动条元素、<code>draggable: true</code> 允许按住滚动条拖动换片；<code>keyboard.enabled</code> 打开 ←/→ 方向键切换；<code>zoom.maxRatio</code> 限制最大放大 3 倍，<code>toggle</code> 让双击在放大与还原之间切换。</dd>
+        <dt>Q2：为什么图片必须包在 .swiper-zoom-container 里？</dt>
+        <dd>zoom 模块把双击监听和缩放 transform 绑定在 <code>.swiper-zoom-container</code> 上，图片直接放在 slide 里时这个容器不存在，双击就没有任何反应；这是官方 <code>400-zoom.html</code> 示例规定的结构。</dd>
+        <dt>Q3：第 2 轮新增参数的作用？</dt>
+        <dd><code>scrollbar.draggable</code> 让滚动条可以拖拽到任意进度直接跳片；<code>hide: false</code> 让滚动条常显不自动隐藏；<code>keyboard.enabled</code> 在轮播位于视口内时支持方向键；<code>grabCursor</code> 只改光标样式，提示“可抓取”。</dd>
         <dt>Q4：现场把 delay 改成指定值并解释预期变化？</dt>
-        <dd>把 <code>delay: 4000</code> 改成 2000：每张停留时间减半，自动翻页变快；改成 6000 则变慢。只要 <code>disableOnInteraction: false</code> 不变，手动滑动后仍会继续自动播放。</dd>
+        <dd>把 <code>delay: 4000</code> 改成 2000：每张停留时间减半，自动翻页变快；改成 6000 则变慢。只要 <code>disableOnInteraction: false</code> 不变，手动操作后仍会继续自动播放。</dd>
       </dl>
     </div>
   </div>
