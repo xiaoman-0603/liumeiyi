@@ -35,9 +35,10 @@
     .LMY_notes h2 { margin: 0 0 8px; color: #654923; font-size: 20px; }
     .LMY_notes p { margin: 8px 0; }
     .LMY_notes code { color: #8c512f; overflow-wrap: anywhere; }
-    .LMY_video_slot { display: grid; place-items: center; min-height: 210px; margin-top: 22px; padding: 26px; color: #95866e; border: 2px dashed #c5b493; border-radius: 20px; text-align: center; }
+    .LMY_video_slot { display: grid; place-items: center; min-height: 210px; margin-top: 22px; padding: 26px; color: #95866e; border: 1px solid #c5b493; border-radius: 20px; text-align: center; }
     .LMY_video_slot strong { display: block; margin-bottom: 8px; color: #6c5534; font-size: 19px; }
-    .LMY_video_slot p { margin: 4px 0; }
+    .LMY_video_slot p { margin: 10px 0 0; }
+    .LMY_video { display: block; width: 100%; max-height: 520px; margin-top: 16px; border-radius: 14px; background: #17130d; }
     @media (max-width: 480px) {
       .LMY_hero, .LMY_result { padding: 23px; }
     }
@@ -72,11 +73,14 @@
       <p><strong>踩坑与解决：</strong>只判断 DeviceMotionEvent 是否存在并不够，有些设备有接口却不返回数据；因此增加 2.5 秒无数据检测，并保留手动抽取入口。</p>
     </section>
 
-    <section class="LMY_video_slot" aria-label="任务四手机测试视频预留位置">
-      <div>
-        <strong>手机测试视频位置（待补充）</strong>
-        <p>后续在此放入任务四真机摇一摇测试视频</p>
-        <p>建议文件名：LMY_mobile-sensor-test.mp4</p>
+    <section class="LMY_video_slot" aria-label="任务四手机测试视频">
+      <div style="width: 100%;">
+        <strong>任务四手机测试视频</strong>
+        <video class="LMY_video" controls playsinline preload="metadata" aria-label="任务四摇一摇抽取今日菜谱测试视频">
+          <source src="任务4.mp4" type="video/mp4">
+          当前浏览器不支持视频播放，请直接打开任务4.mp4。
+        </video>
+        <p>测试内容：传感器权限、摇一摇抽菜与触发冷却</p>
       </div>
     </section>
   </main>

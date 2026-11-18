@@ -23,9 +23,10 @@
     .LMY_notes h2 { margin: 0 0 8px; color: #4b3a64; font-size: 20px; }
     .LMY_notes p { margin: 8px 0; }
     .LMY_formula { padding: 12px; overflow-x: auto; color: #ddd0fa; border-radius: 10px; background: #282131; font-family: Consolas, monospace; white-space: nowrap; }
-    .LMY_video_slot { display: grid; place-items: center; min-height: 210px; margin-top: 22px; padding: 26px; color: #8f849e; border: 2px dashed #4b4259; border-radius: 20px; background: #19161f; text-align: center; }
+    .LMY_video_slot { display: grid; place-items: center; min-height: 210px; margin-top: 22px; padding: 26px; color: #8f849e; border: 1px solid #4b4259; border-radius: 20px; background: #19161f; text-align: center; }
     .LMY_video_slot strong { display: block; margin-bottom: 8px; color: #d4c8e4; font-size: 19px; }
-    .LMY_video_slot p { margin: 4px 0; }
+    .LMY_video_slot p { margin: 10px 0 0; }
+    .LMY_video { display: block; width: 100%; max-height: 520px; margin-top: 16px; border-radius: 14px; background: #08080b; }
     @media (max-width: 480px) {
       .LMY_viewer { min-height: 390px; height: 60vh; border-radius: 18px; }
       .LMY_header { align-items: center; }
@@ -59,11 +60,14 @@
       <p><strong>踩坑与解决：</strong>直接用当前距离乘比例会越放越大；改为“初始比例 × 当前距离 / 初始距离”，让每帧都基于同一份起始状态计算。</p>
     </section>
 
-    <section class="LMY_video_slot" aria-label="任务三手机测试视频预留位置">
-      <div>
-        <strong>手机测试视频位置（待补充）</strong>
-        <p>后续在此放入任务三真机测试视频</p>
-        <p>建议文件名：LMY_mobile-zoom-test.mp4</p>
+    <section class="LMY_video_slot" aria-label="任务三手机测试视频">
+      <div style="width: 100%;">
+        <strong>任务三手机测试视频</strong>
+        <video class="LMY_video" controls playsinline preload="metadata" aria-label="任务三双指缩放、双击放大与拖动测试视频">
+          <source src="任务3.mp4" type="video/mp4">
+          当前浏览器不支持视频播放，请直接打开任务3.mp4。
+        </video>
+        <p>测试内容：双指缩放、双击放大、单指拖动与边界限制</p>
       </div>
     </section>
   </main>
