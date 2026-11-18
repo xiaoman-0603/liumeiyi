@@ -1,0 +1,185 @@
+<!-- 刘美怡 学号: 211 | 建立时间: 2026-11-18 13:55:09 | 使用大模型: Kimi-K3.1-Pro | 功能名称: 左右滑动切换中华美食卡片 -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>任务二 · 中华美食手势卡片</title>
+  <style>
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body { margin: 0; color: #29241f; background: #f5f1e9; font-family: "Microsoft YaHei", sans-serif; }
+    button { font: inherit; }
+    .LMY_page { width: min(100% - 28px, 680px); margin: 0 auto; padding: 20px 0 48px; }
+    .LMY_home { display: inline-block; margin-bottom: 20px; color: #805336; text-decoration: none; font-weight: 700; }
+    .LMY_header { margin-bottom: 20px; }
+    .LMY_kicker { margin: 0; color: #a56742; font-size: 13px; font-weight: 700; letter-spacing: 2px; }
+    .LMY_header h1 { margin: 4px 0; font-family: SimSun, serif; font-size: clamp(28px, 7vw, 42px); }
+    .LMY_header p { margin: 0; color: #766c62; }
+    .LMY_card { position: relative; min-height: 390px; padding: 32px; overflow: hidden; color: #fff; border-radius: 28px; box-shadow: 0 22px 50px rgba(83, 47, 28, .2); touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+    .LMY_card::after { content: "食"; position: absolute; right: -10px; bottom: -75px; color: rgba(255,255,255,.1); font-family: SimSun, serif; font-size: 260px; line-height: 1; pointer-events: none; }
+    .LMY_card_top { position: relative; z-index: 1; display: flex; justify-content: space-between; align-items: center; }
+    .LMY_seal { padding: 5px 11px; border: 1px solid rgba(255,255,255,.55); border-radius: 6px; font-family: SimSun, serif; }
+    .LMY_count { font-variant-numeric: tabular-nums; }
+    .LMY_card_body { position: relative; z-index: 1; margin-top: 76px; }
+    .LMY_card_body h2 { margin: 0 0 14px; font-family: SimSun, serif; font-size: clamp(43px, 11vw, 66px); letter-spacing: 5px; }
+    .LMY_desc { max-width: 410px; min-height: 84px; margin: 0; color: rgba(255,255,255,.9); font-size: 17px; line-height: 1.8; }
+    .LMY_swipe_hint { position: absolute; z-index: 1; left: 32px; bottom: 28px; margin: 0; font-size: 14px; opacity: .8; }
+    .LMY_controls { display: grid; grid-template-columns: 1fr auto 1fr; gap: 14px; align-items: center; margin-top: 20px; }
+    .LMY_button { padding: 11px 18px; color: #69462f; border: 1px solid #dacabb; border-radius: 999px; background: #fff; cursor: pointer; }
+    .LMY_button:last-child { justify-self: end; }
+    .LMY_button:active { transform: scale(.96); }
+    .LMY_dots { display: flex; gap: 7px; }
+    .LMY_dot { width: 7px; height: 7px; border-radius: 10px; background: #d8cabc; transition: width .3s, background .3s; }
+    .LMY_dot_active { width: 23px; background: #a45d39; }
+    .LMY_status { min-height: 28px; margin: 14px 0 0; color: #a14d2d; text-align: center; font-weight: 700; }
+    .LMY_notes { margin-top: 24px; padding: 22px; border: 1px solid #e4d9ce; border-radius: 18px; background: rgba(255,255,255,.7); line-height: 1.8; }
+    .LMY_notes h2 { margin: 0 0 8px; font-size: 19px; }
+    .LMY_notes ul { margin: 8px 0; padding-left: 20px; }
+    .LMY_notes p { margin: 8px 0; }
+    .LMY_prompt { color: #6f645b; font-size: 14px; }
+    @media (max-width: 480px) {
+      .LMY_card { min-height: 360px; padding: 25px; }
+      .LMY_card_body { margin-top: 64px; }
+      .LMY_swipe_hint { left: 25px; }
+      .LMY_controls { gap: 8px; }
+      .LMY_button { padding: 10px 13px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="LMY_page">
+    <a class="LMY_home" href="file:///d:/网页制作/index.html">← 返回首页</a>
+    <header class="LMY_header">
+      <p class="LMY_kicker">任务二 · 手势识别与 DOM 操作</p>
+      <h1>中华美食卡片</h1>
+      <p>刘美怡 · 学号 211　左右滑动卡片，品味四道中华美食</p>
+    </header>
+
+    <article class="LMY_card" id="LMY_card" aria-live="polite">
+      <div class="LMY_card_top">
+        <span class="LMY_seal" id="LMY_tag">鲁菜</span>
+        <span class="LMY_count" id="LMY_count">第 1/4 张</span>
+      </div>
+      <div class="LMY_card_body">
+        <h2 id="LMY_name">糖醋鲤鱼</h2>
+        <p class="LMY_desc" id="LMY_desc">鲤鱼炸至外酥里嫩，浇上酸甜透亮的糖醋汁。造型昂首翘尾，色如琥珀，是宴席上兼具滋味与好意头的一道菜。</p>
+      </div>
+      <p class="LMY_swipe_hint">← 左右滑动切换 →</p>
+    </article>
+
+    <div class="LMY_controls">
+      <button class="LMY_button" id="LMY_prev" type="button">上一道</button>
+      <div class="LMY_dots" aria-label="卡片位置">
+        <span class="LMY_dot LMY_dot_active"></span><span class="LMY_dot"></span><span class="LMY_dot"></span><span class="LMY_dot"></span>
+      </div>
+      <button class="LMY_button" id="LMY_next" type="button">下一道</button>
+    </div>
+    <p class="LMY_status" id="LMY_status" role="status"></p>
+
+    <section class="LMY_notes">
+      <h2>实现与验收说明</h2>
+      <ul>
+        <li>使用 touchstart / touchend 和 changedTouches[0] 计算位移，横向阈值为 40px，且横向位移需大于纵向位移。</li>
+        <li>成功切换后进入 300ms 冷却，快速连滑不会一次跳两张；切换动画为 0.3s。</li>
+        <li>卡片设置 touch-action: pan-y，横向手势交给我处理，页面仍可纵向滚动。</li>
+      </ul>
+      <p><strong>踩坑与解决：</strong>刚开始只限制距离，斜向滚动也可能翻页；后来增加横向位移必须大于纵向位移的判断，减少误触。</p>
+      <p class="LMY_prompt"><strong>AI 提示词记录：</strong>根据参考网址和四张任务图完成任务 1～4，统一使用 LMY_ 前缀，任务 3、4 预留手机测试视频位置。</p>
+    </section>
+  </main>
+
+  <script>
+    // 刘美怡：四道菜的内容与各自的渐变背景
+    var LMY_dishes = [
+      { name: "糖醋鲤鱼", tag: "鲁菜", desc: "鲤鱼炸至外酥里嫩，浇上酸甜透亮的糖醋汁。造型昂首翘尾，色如琥珀，是宴席上兼具滋味与好意头的一道菜。", gradient: "linear-gradient(145deg, #a84732, #df9561)" },
+      { name: "麻婆豆腐", tag: "川菜", desc: "嫩豆腐与牛肉末在红油中相逢，麻、辣、烫、香、酥、嫩、鲜、活层层展开，一勺便能唤醒味蕾。", gradient: "linear-gradient(145deg, #7e2620, #cb4d2d)" },
+      { name: "清蒸鲈鱼", tag: "粤菜", desc: "鲜鲈鱼以姜葱清蒸，出锅淋豉油与热油。鱼肉细嫩、汤汁清鲜，用最简洁的火候保留食材本味。", gradient: "linear-gradient(145deg, #276861, #69a88d)" },
+      { name: "扬州炒饭", tag: "苏菜", desc: "米饭粒粒分明，鸡蛋、虾仁与青豆点缀其间。火候利落，锅气十足，朴素食材也能呈现丰富层次。", gradient: "linear-gradient(145deg, #8b6624, #d5a842)" }
+    ];
+    var LMY_card = document.getElementById("LMY_card");
+    var LMY_name = document.getElementById("LMY_name");
+    var LMY_tag = document.getElementById("LMY_tag");
+    var LMY_desc = document.getElementById("LMY_desc");
+    var LMY_count = document.getElementById("LMY_count");
+    var LMY_status = document.getElementById("LMY_status");
+    var LMY_dots = document.querySelectorAll(".LMY_dot");
+    var LMY_index = 0;
+    var LMY_startX = 0;
+    var LMY_startY = 0;
+    var LMY_cooling = false;
+
+    // 把当前菜品文字、序号、圆点和渐变背景同步到页面
+    function LMY_renderCard() {
+      var LMY_dish = LMY_dishes[LMY_index];
+      LMY_name.textContent = LMY_dish.name;
+      LMY_tag.textContent = LMY_dish.tag;
+      LMY_desc.textContent = LMY_dish.desc;
+      LMY_count.textContent = "第 " + (LMY_index + 1) + "/4 张";
+      LMY_card.style.background = LMY_dish.gradient;
+      for (var LMY_i = 0; LMY_i < LMY_dots.length; LMY_i++) {
+        LMY_dots[LMY_i].classList.toggle("LMY_dot_active", LMY_i === LMY_index);
+      }
+    }
+
+    // 冷却结束后允许下一次切换，防止快速连滑跳页
+    function LMY_endCooling() {
+      LMY_cooling = false;
+    }
+
+    // 按方向切换卡片并处理第一张、最后一张的边界提示
+    function LMY_switchCard(LMY_direction) {
+      if (LMY_cooling) return;
+      var LMY_nextIndex = LMY_index + LMY_direction;
+      if (LMY_nextIndex < 0) {
+        LMY_status.textContent = "已经是第一张";
+        return;
+      }
+      if (LMY_nextIndex >= LMY_dishes.length) {
+        LMY_status.textContent = "已经是最后一张";
+        return;
+      }
+      LMY_cooling = true;
+      LMY_index = LMY_nextIndex;
+      LMY_status.textContent = "";
+      LMY_renderCard();
+      LMY_card.animate(
+        [{ opacity: .25, transform: "translateX(" + (LMY_direction > 0 ? "28px" : "-28px") + ")" }, { opacity: 1, transform: "translateX(0)" }],
+        { duration: 300, easing: "ease-out" }
+      );
+      setTimeout(LMY_endCooling, 300);
+    }
+
+    // 记录单指触摸起点，为抬手时计算横纵位移做准备
+    function LMY_onTouchStart(LMY_event) {
+      if (LMY_event.touches.length !== 1) return;
+      LMY_startX = LMY_event.touches[0].clientX;
+      LMY_startY = LMY_event.touches[0].clientY;
+    }
+
+    // 用 changedTouches 读取抬手坐标，满足阈值和方向条件后翻页
+    function LMY_onTouchEnd(LMY_event) {
+      if (LMY_cooling || LMY_event.changedTouches.length !== 1) return;
+      var LMY_dx = LMY_event.changedTouches[0].clientX - LMY_startX;
+      var LMY_dy = LMY_event.changedTouches[0].clientY - LMY_startY;
+      if (Math.abs(LMY_dx) < 40 || Math.abs(LMY_dx) <= Math.abs(LMY_dy)) return;
+      LMY_switchCard(LMY_dx < 0 ? 1 : -1);
+    }
+
+    // 上一道按钮与右滑保持一致
+    function LMY_onPrevClick() {
+      LMY_switchCard(-1);
+    }
+
+    // 下一道按钮与左滑保持一致
+    function LMY_onNextClick() {
+      LMY_switchCard(1);
+    }
+
+    LMY_card.addEventListener("touchstart", LMY_onTouchStart, { passive: true });
+    LMY_card.addEventListener("touchend", LMY_onTouchEnd, { passive: true });
+    document.getElementById("LMY_prev").addEventListener("click", LMY_onPrevClick);
+    document.getElementById("LMY_next").addEventListener("click", LMY_onNextClick);
+    LMY_renderCard();
+  </script>
+</body>
+</html>

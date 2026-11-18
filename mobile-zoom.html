@@ -1,0 +1,258 @@
+<!-- 刘美怡 学号: 211 | 建立时间: 2026-11-18 13:55:09 | 使用大模型: Kimi-K3.1-Pro | 功能名称: 双指缩放双击放大与单指拖动图片查看器 -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>任务三 · 移动端图片查看器</title>
+  <style>
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body { margin: 0; color: #ecebf2; background: #111018; font-family: "Microsoft YaHei", sans-serif; }
+    .LMY_page { width: min(100% - 28px, 780px); margin: 0 auto; padding: 20px 0 48px; }
+    .LMY_home { display: inline-block; margin-bottom: 20px; color: #c8b6f2; text-decoration: none; font-weight: 700; }
+    .LMY_header { display: flex; justify-content: space-between; gap: 16px; align-items: end; margin-bottom: 16px; }
+    .LMY_kicker { margin: 0; color: #9f90c6; font-size: 13px; letter-spacing: 2px; }
+    .LMY_header h1 { margin: 5px 0 0; font-size: clamp(26px, 6vw, 38px); }
+    .LMY_scale { flex: none; padding: 7px 12px; color: #e7dcff; border: 1px solid #514468; border-radius: 999px; background: #211c2e; font-variant-numeric: tabular-nums; }
+    .LMY_tip { margin: 0 0 12px; color: #c1b9ce; font-size: 14px; }
+    .LMY_viewer { position: relative; width: 100%; height: min(66vh, 570px); min-height: 350px; overflow: hidden; border: 1px solid #393342; border-radius: 24px; background: #08080b; touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+    .LMY_image { display: block; width: 100%; height: 100%; object-fit: cover; transform-origin: center center; will-change: transform; pointer-events: none; }
+    .LMY_animating { transition: transform .25s ease; }
+    .LMY_gesture_hint { position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%); width: max-content; max-width: calc(100% - 32px); padding: 8px 14px; color: #fff; border: 1px solid rgba(255,255,255,.15); border-radius: 999px; background: rgba(12,10,17,.7); font-size: 13px; text-align: center; pointer-events: none; }
+    .LMY_notes { margin-top: 22px; padding: 22px; color: #35303d; border-radius: 20px; background: #f6f3f8; line-height: 1.8; }
+    .LMY_notes h2 { margin: 0 0 8px; color: #4b3a64; font-size: 20px; }
+    .LMY_notes p { margin: 8px 0; }
+    .LMY_formula { padding: 12px; overflow-x: auto; color: #ddd0fa; border-radius: 10px; background: #282131; font-family: Consolas, monospace; white-space: nowrap; }
+    .LMY_video_slot { display: grid; place-items: center; min-height: 210px; margin-top: 22px; padding: 26px; color: #8f849e; border: 2px dashed #4b4259; border-radius: 20px; background: #19161f; text-align: center; }
+    .LMY_video_slot strong { display: block; margin-bottom: 8px; color: #d4c8e4; font-size: 19px; }
+    .LMY_video_slot p { margin: 4px 0; }
+    @media (max-width: 480px) {
+      .LMY_viewer { min-height: 390px; height: 60vh; border-radius: 18px; }
+      .LMY_header { align-items: center; }
+      .LMY_gesture_hint { font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="LMY_page">
+    <a class="LMY_home" href="file:///d:/网页制作/index.html">← 返回首页</a>
+    <header class="LMY_header">
+      <div>
+        <p class="LMY_kicker">任务三 · 多指手势 / 变换 / 状态管理</p>
+        <h1>中华宴席图片查看器</h1>
+      </div>
+      <span class="LMY_scale" id="LMY_scale">1.00×</span>
+    </header>
+    <p class="LMY_tip" id="LMY_tip">双指缩放请用手机打开 · 刘美怡 学号 211</p>
+
+    <section class="LMY_viewer" id="LMY_viewer" aria-label="可缩放拖动的中华宴席图片">
+      <img class="LMY_image" id="LMY_image" src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=overhead%20photograph%20of%20a%20colorful%20Chinese%20banquet%2C%20steamed%20fish%2C%20dumplings%2C%20vegetables%20and%20rice%20on%20a%20dark%20wooden%20table%2C%20warm%20natural%20light%2C%20highly%20detailed%20editorial%20food%20photography&image_size=landscape_4_3" alt="摆有清蒸鱼、饺子、蔬菜和米饭的中华宴席" draggable="false">
+      <div class="LMY_gesture_hint">双指缩放 1×～4× · 双击 1× / 2× · 放大后单指拖动</div>
+    </section>
+
+    <section class="LMY_notes">
+      <h2>答辩：如何保证“缩放不跳”</h2>
+      <p>双指开始时保存初始距离、初始比例、初始位移和两指中点。移动时以同一中点为锚点，先算图片坐标，再反推新的位移，而不是简单累加 scale：</p>
+      <div class="LMY_formula">newTranslate = currentMid - (startMid - startTranslate) × (newScale / startScale)</div>
+      <p>这样两指中心下的图片点在缩放前后保持不动。双指变成单指时，会重新记录单指起点和当前位移，避免沿用旧坐标造成跳动。</p>
+      <p><strong>边界与旋转：</strong>每次变换都把位移限制在当前缩放比例允许的范围内，1× 时位移固定为 0；resize 时只重新计算边界，不重置 scale、translate，因此横竖屏切换不丢状态。</p>
+      <p><strong>踩坑与解决：</strong>直接用当前距离乘比例会越放越大；改为“初始比例 × 当前距离 / 初始距离”，让每帧都基于同一份起始状态计算。</p>
+    </section>
+
+    <section class="LMY_video_slot" aria-label="任务三手机测试视频预留位置">
+      <div>
+        <strong>手机测试视频位置（待补充）</strong>
+        <p>后续在此放入任务三真机测试视频</p>
+        <p>建议文件名：LMY_mobile-zoom-test.mp4</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    var LMY_viewer = document.getElementById("LMY_viewer");
+    var LMY_image = document.getElementById("LMY_image");
+    var LMY_scaleLabel = document.getElementById("LMY_scale");
+    var LMY_scale = 1;
+    var LMY_tx = 0;
+    var LMY_ty = 0;
+    var LMY_mode = "idle";
+    var LMY_startDistance = 1;
+    var LMY_startScale = 1;
+    var LMY_startMidX = 0;
+    var LMY_startMidY = 0;
+    var LMY_startTx = 0;
+    var LMY_startTy = 0;
+    var LMY_lastX = 0;
+    var LMY_lastY = 0;
+    var LMY_moved = false;
+    var LMY_lastTap = 0;
+    var LMY_rect = LMY_viewer.getBoundingClientRect();
+    var LMY_animationTimer = null;
+
+    // 计算两指之间的直线距离，作为缩放比例的依据
+    function LMY_getDistance(LMY_touches) {
+      return Math.hypot(LMY_touches[0].clientX - LMY_touches[1].clientX, LMY_touches[0].clientY - LMY_touches[1].clientY);
+    }
+
+    // 计算两指中点并转换成相对图片容器中心的坐标
+    function LMY_getMidpoint(LMY_touches) {
+      return {
+        x: (LMY_touches[0].clientX + LMY_touches[1].clientX) / 2 - LMY_rect.left - LMY_rect.width / 2,
+        y: (LMY_touches[0].clientY + LMY_touches[1].clientY) / 2 - LMY_rect.top - LMY_rect.height / 2
+      };
+    }
+
+    // 将缩放比例限制在 1 到 4 倍之间
+    function LMY_clampScale(LMY_value) {
+      return Math.min(4, Math.max(1, LMY_value));
+    }
+
+    // 按当前缩放尺寸限制图片位移，1 倍时自动居中且不能拖出边界
+    function LMY_clampPosition() {
+      var LMY_maxX = Math.max(0, (LMY_viewer.clientWidth * LMY_scale - LMY_viewer.clientWidth) / 2);
+      var LMY_maxY = Math.max(0, (LMY_viewer.clientHeight * LMY_scale - LMY_viewer.clientHeight) / 2);
+      LMY_tx = Math.min(LMY_maxX, Math.max(-LMY_maxX, LMY_tx));
+      LMY_ty = Math.min(LMY_maxY, Math.max(-LMY_maxY, LMY_ty));
+      if (LMY_scale === 1) {
+        LMY_tx = 0;
+        LMY_ty = 0;
+      }
+    }
+
+    // 把缩放、位移和比例指示器一次性同步到界面
+    function LMY_applyTransform() {
+      LMY_clampPosition();
+      LMY_image.style.transform = "translate(" + LMY_tx + "px, " + LMY_ty + "px) scale(" + LMY_scale + ")";
+      LMY_scaleLabel.textContent = LMY_scale.toFixed(2) + "×";
+    }
+
+    // 双击动画结束后移除过渡，避免后续跟手拖动产生延迟
+    function LMY_removeAnimation() {
+      LMY_image.classList.remove("LMY_animating");
+      LMY_animationTimer = null;
+    }
+
+    // 双击时在 1 倍与 2 倍间切换，并以双击位置为缩放中心
+    function LMY_handleTap(LMY_touch) {
+      var LMY_now = Date.now();
+      if (LMY_now - LMY_lastTap >= 300) {
+        LMY_lastTap = LMY_now;
+        return;
+      }
+      LMY_lastTap = 0;
+      if (LMY_animationTimer) clearTimeout(LMY_animationTimer);
+      var LMY_tapX = LMY_touch.clientX - LMY_rect.left - LMY_rect.width / 2;
+      var LMY_tapY = LMY_touch.clientY - LMY_rect.top - LMY_rect.height / 2;
+      var LMY_oldScale = LMY_scale;
+      var LMY_targetScale = LMY_oldScale > 1.05 ? 1 : 2;
+      if (LMY_targetScale === 1) {
+        LMY_tx = 0;
+        LMY_ty = 0;
+      } else {
+        var LMY_ratio = LMY_targetScale / LMY_oldScale;
+        LMY_tx = LMY_tapX - (LMY_tapX - LMY_tx) * LMY_ratio;
+        LMY_ty = LMY_tapY - (LMY_tapY - LMY_ty) * LMY_ratio;
+      }
+      LMY_scale = LMY_targetScale;
+      LMY_image.classList.add("LMY_animating");
+      LMY_applyTransform();
+      LMY_animationTimer = setTimeout(LMY_removeAnimation, 250);
+    }
+
+    // 触摸开始时分别记录单指拖动或双指缩放所需的完整初始状态
+    function LMY_onTouchStart(LMY_event) {
+      LMY_event.preventDefault();
+      LMY_image.classList.remove("LMY_animating");
+      if (LMY_animationTimer) {
+        clearTimeout(LMY_animationTimer);
+        LMY_animationTimer = null;
+      }
+      if (LMY_event.touches.length === 2) {
+        var LMY_mid = LMY_getMidpoint(LMY_event.touches);
+        LMY_mode = "pinch";
+        LMY_startDistance = Math.max(1, LMY_getDistance(LMY_event.touches));
+        LMY_startScale = LMY_scale;
+        LMY_startMidX = LMY_mid.x;
+        LMY_startMidY = LMY_mid.y;
+        LMY_startTx = LMY_tx;
+        LMY_startTy = LMY_ty;
+        LMY_moved = true;
+      } else if (LMY_event.touches.length === 1) {
+        LMY_mode = "single";
+        LMY_lastX = LMY_event.touches[0].clientX;
+        LMY_lastY = LMY_event.touches[0].clientY;
+        LMY_startTx = LMY_tx;
+        LMY_startTy = LMY_ty;
+        LMY_moved = false;
+      }
+    }
+
+    // 双指按中点缩放，单指仅在放大后拖动，并阻止页面跟随滚动
+    function LMY_onTouchMove(LMY_event) {
+      LMY_event.preventDefault();
+      if (LMY_event.touches.length === 2 && LMY_mode === "pinch") {
+        var LMY_distance = Math.max(1, LMY_getDistance(LMY_event.touches));
+        var LMY_mid = LMY_getMidpoint(LMY_event.touches);
+        LMY_scale = LMY_clampScale(LMY_startScale * LMY_distance / LMY_startDistance);
+        var LMY_ratio = LMY_scale / LMY_startScale;
+        LMY_tx = LMY_mid.x - (LMY_startMidX - LMY_startTx) * LMY_ratio;
+        LMY_ty = LMY_mid.y - (LMY_startMidY - LMY_startTy) * LMY_ratio;
+        LMY_applyTransform();
+      } else if (LMY_event.touches.length === 1 && LMY_mode === "single") {
+        var LMY_touch = LMY_event.touches[0];
+        if (Math.hypot(LMY_touch.clientX - LMY_lastX, LMY_touch.clientY - LMY_lastY) > 4) LMY_moved = true;
+        if (LMY_scale > 1) {
+          LMY_tx = LMY_startTx + LMY_touch.clientX - LMY_lastX;
+          LMY_ty = LMY_startTy + LMY_touch.clientY - LMY_lastY;
+          LMY_applyTransform();
+        }
+      }
+    }
+
+    // 抬手时处理双击、边界复位，并在双指变单指时重建拖动基准
+    function LMY_onTouchEnd(LMY_event) {
+      LMY_event.preventDefault();
+      if (LMY_event.touches.length === 1) {
+        LMY_mode = "single";
+        LMY_lastX = LMY_event.touches[0].clientX;
+        LMY_lastY = LMY_event.touches[0].clientY;
+        LMY_startTx = LMY_tx;
+        LMY_startTy = LMY_ty;
+        LMY_moved = true;
+        return;
+      }
+      if (LMY_event.touches.length === 0) {
+        if (LMY_mode === "single" && !LMY_moved && LMY_event.changedTouches.length === 1) LMY_handleTap(LMY_event.changedTouches[0]);
+        if (LMY_scale <= 1.001) {
+          LMY_scale = 1;
+          LMY_tx = 0;
+          LMY_ty = 0;
+        }
+        LMY_applyTransform();
+        LMY_mode = "idle";
+      }
+    }
+
+    // 系统中断触摸时只清理手势状态，不触发双击或额外操作
+    function LMY_onTouchCancel() {
+      LMY_mode = "idle";
+      LMY_moved = false;
+      if (LMY_scale <= 1.001) LMY_scale = 1;
+      LMY_applyTransform();
+    }
+
+    // 屏幕旋转或尺寸改变时保留缩放状态，只更新坐标和边界
+    function LMY_onResize() {
+      LMY_rect = LMY_viewer.getBoundingClientRect();
+      LMY_applyTransform();
+    }
+
+    LMY_viewer.addEventListener("touchstart", LMY_onTouchStart, { passive: false });
+    LMY_viewer.addEventListener("touchmove", LMY_onTouchMove, { passive: false });
+    LMY_viewer.addEventListener("touchend", LMY_onTouchEnd, { passive: false });
+    LMY_viewer.addEventListener("touchcancel", LMY_onTouchCancel, { passive: true });
+    window.addEventListener("resize", LMY_onResize, { passive: true });
+    LMY_applyTransform();
+  </script>
+</body>
+</html>

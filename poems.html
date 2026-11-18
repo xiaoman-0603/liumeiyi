@@ -1,0 +1,72 @@
+<!-- 刘美怡 | 建立时间: 2026-11-13 14:01:48 | 使用大模型: Kimi-K3.1-Pro | 功能名称: 诗歌列表上图下文（3004端口数据服务器） -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>诗歌长廊 · 上图下文 · 刘美怡</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;background:#f6f8fc;color:#1f2937}
+  .lmy_wrap{max-width:1100px;margin:0 auto;padding:34px 20px 50px}
+  .lmy_head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:24px}
+  .lmy_head h1{font-size:26px;color:#0f2b5b}
+  .lmy_head p{font-size:13px;color:#6b7280;margin-top:6px}
+  .lmy_home{flex:none;text-decoration:none;font-size:14px;font-weight:bold;color:#0f2b5b;background:#fff;border:1px solid #dbe4ff;border-radius:999px;padding:9px 22px}
+  .lmy_home:hover{background:#eef3ff}
+  .lmy_grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:22px}
+  .lmy_card{background:#fff;border:1px solid #e8ecf5;border-radius:16px;overflow:hidden;box-shadow:0 4px 14px rgba(31,41,55,.06);transition:transform .2s,box-shadow .2s}
+  .lmy_card:hover{transform:translateY(-4px);box-shadow:0 10px 24px rgba(15,43,91,.12)}
+  .lmy_card img{width:100%;height:180px;object-fit:cover;display:block;background:#e8ecf5}
+  .lmy_body{padding:16px 18px 20px}
+  .lmy_body h3{font-size:18px;color:#0f2b5b;margin-bottom:8px}
+  .lmy_body p{font-size:14px;line-height:1.9;color:#4b5563}
+  .lmy_tip{grid-column:1/-1;text-align:center;color:#9ca3af;font-size:14px;padding:40px 0}
+  .lmy_tip.lmy_err{color:#b91c1c}
+</style>
+</head>
+<body>
+<div class="lmy_wrap">
+
+  <div class="lmy_head">
+    <div>
+      <h1>诗歌长廊 · 上图下文</h1>
+      <p>数据来源：本地服务器 http://localhost:3004/poems（db/db.json · poems 的 pic / title / content）</p>
+    </div>
+    <a class="lmy_home" href="file:///d:/网页制作/index.html">← 返回课堂实践中心</a>
+  </div>
+
+  <div class="lmy_grid" id="lmyGrid">
+    <p class="lmy_tip" id="lmyTip">正在加载诗歌数据……</p>
+  </div>
+
+</div>
+
+<script>
+// 从 3004 数据服务器获取 poems 数据，渲染上图下文卡片
+async function lmy_loadPoems() {
+  const lmy_grid = document.getElementById("lmyGrid");
+  const lmy_tip = document.getElementById("lmyTip");
+  try {
+    const lmy_res = await fetch("http://localhost:3004/poems");
+    if (!lmy_res.ok) throw new Error("HTTP " + lmy_res.status);
+    const lmy_poems = await lmy_res.json();
+    lmy_tip.remove();
+    // 逐条生成卡片：上图（pic）下文（title + content）
+    lmy_poems.forEach((lmy_item) => {
+      const lmy_card = document.createElement("div");
+      lmy_card.className = "lmy_card";
+      lmy_card.innerHTML =
+        '<img src="' + lmy_item.pic + '" alt="' + lmy_item.title + '" referrerpolicy="no-referrer">' +
+        '<div class="lmy_body"><h3>' + lmy_item.title + "</h3><p>" + lmy_item.content + "</p></div>";
+      lmy_grid.appendChild(lmy_card);
+    });
+  } catch (lmy_err) {
+    lmy_tip.textContent = "数据加载失败：请先运行 node db/server.js 启动 3004 端口服务器（" + lmy_err.message + "）";
+    lmy_tip.classList.add("lmy_err");
+  }
+}
+lmy_loadPoems();
+</script>
+</body>
+</html>

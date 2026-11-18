@@ -1,0 +1,104 @@
+<!-- 刘美怡 学号: 211 | 建立时间: 2026-11-18 13:55:09 | 使用大模型: Kimi-K3.1-Pro | 功能名称: 事件侦探观察记录 -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>任务一 · 事件侦探观察记录</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; color: #27232c; background: #f6f3ee; font-family: "Microsoft YaHei", sans-serif; line-height: 1.75; }
+    .LMY_page { width: min(100% - 32px, 920px); margin: 0 auto; padding: 24px 0 48px; }
+    .LMY_home { display: inline-block; color: #7254a3; text-decoration: none; font-weight: 700; }
+    .LMY_hero { margin: 18px 0; padding: 30px; color: #fff; border-radius: 24px; background: linear-gradient(135deg, #4b2b70, #8b5fbf); }
+    .LMY_kicker { margin: 0; color: #e6d9ff; font-size: 14px; letter-spacing: 2px; }
+    .LMY_hero h1 { margin: 6px 0; font-size: clamp(25px, 5vw, 38px); }
+    .LMY_hero p { margin: 0; }
+    .LMY_card { margin-top: 18px; padding: 24px; border: 1px solid #e6dfd7; border-radius: 20px; background: #fff; box-shadow: 0 8px 30px rgba(55, 38, 68, .05); }
+    .LMY_card h2 { margin: 0 0 12px; color: #4b2b70; font-size: 21px; }
+    .LMY_table_wrap { overflow-x: auto; }
+    .LMY_table { width: 100%; min-width: 650px; border-collapse: collapse; }
+    .LMY_table th, .LMY_table td { padding: 12px; border-bottom: 1px solid #eee7f2; text-align: left; vertical-align: top; }
+    .LMY_table th { color: #60467c; background: #f7f2fb; }
+    .LMY_event { color: #7846b7; font-family: Consolas, monospace; white-space: nowrap; }
+    .LMY_note { padding: 12px 16px; border-left: 4px solid #d78d35; background: #fff8e9; }
+    .LMY_answers { padding-left: 22px; }
+    .LMY_answers li { margin-bottom: 12px; }
+    .LMY_sketch { display: block; width: 100%; max-height: 310px; border-radius: 16px; background: #191422; }
+    .LMY_caption { color: #746e78; font-size: 14px; }
+    .LMY_prompt { margin: 0; white-space: pre-wrap; }
+    @media (max-width: 560px) {
+      .LMY_page { width: min(100% - 20px, 920px); padding-top: 14px; }
+      .LMY_hero, .LMY_card { padding: 20px; border-radius: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="LMY_page">
+    <a class="LMY_home" href="file:///d:/网页制作/index.html">← 返回首页</a>
+    <header class="LMY_hero">
+      <p class="LMY_kicker">任务一 · 观察 / 记录 / 不写功能代码</p>
+      <h1>事件侦探：一次拖动到底发生了什么</h1>
+      <p>刘美怡 · 学号 211　观察对象：参考页面第 3 节“事件探针”</p>
+    </header>
+
+    <section class="LMY_card">
+      <h2>一、五种操作的事件顺序</h2>
+      <p class="LMY_note">以下为设备模式观察记录示例。touchmove 的次数不是固定值，会随拖动距离、速度和设备采样率变化。</p>
+      <div class="LMY_table_wrap">
+        <table class="LMY_table">
+          <thead><tr><th>操作</th><th>事件触发顺序</th><th>记录结果</th></tr></thead>
+          <tbody>
+            <tr><td>单击</td><td class="LMY_event">touchstart → touchend → click</td><td>没有位移，不触发 touchmove。</td></tr>
+            <tr><td>向上拖动</td><td class="LMY_event">touchstart → touchmove × 18 → touchend</td><td>持续移动时连续采样，明显拖动后未补发 click。</td></tr>
+            <tr><td>向左快速滑</td><td class="LMY_event">touchstart → touchmove × 7 → touchend</td><td>距离相近时，速度越快，通常采样次数越少。</td></tr>
+            <tr><td>双指触摸</td><td class="LMY_event">touchstart(1指) → touchstart(2指) → touchmove → touchend(1指) → touchend(2指)</td><td>touches 反映当前仍在屏幕上的手指；抬起的手指从 changedTouches 读取。</td></tr>
+            <tr><td>长按后抬起</td><td class="LMY_event">touchstart → 停留 → touchend → click</td><td>静止长按不会仅因时间长而触发 touchmove。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="LMY_card">
+      <h2>二、验收三问</h2>
+      <ol class="LMY_answers">
+        <li><strong>一次拖动中 touchmove 大约触发多少次？</strong><br>短滑可能只有几次，较长拖动可能有十几次甚至更多。移动距离越长、持续采样越久，通常次数越多；它还受设备刷新率和移动速度影响，不能用固定次数写业务逻辑。</li>
+        <li><strong>click 出现在 touchend 之前还是之后？</strong><br>之后。顺序是 touchstart → touchend → click，因此同一功能不要同时绑定 touchend 和 click，否则可能执行两次。</li>
+        <li><strong>把 touchend 换成 touchcancel 会怎样？</strong><br>正常抬手不再执行原来的结束逻辑；只有手势被系统手势、来电等中断时才触发 touchcancel，而且通常不会再补发 click。实际项目应分别处理：touchend 完成手势，touchcancel 清理状态并复位。</li>
+      </ol>
+    </section>
+
+    <section class="LMY_card">
+      <h2>三、加分：手指轨迹草图</h2>
+      <svg class="LMY_sketch" viewBox="0 0 720 280" role="img" aria-label="手指从右下方向左上方移动的轨迹草图">
+        <defs>
+          <marker id="LMY_arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#f4b860"/></marker>
+        </defs>
+        <g fill="#8d829b" font-family="Consolas, monospace" font-size="13">
+          <text x="28" y="32">事件探针坐标轨迹 / clientX, clientY</text>
+          <text x="28" y="258">起点 A（560, 220）</text>
+          <text x="510" y="258">终点 B（150, 65）</text>
+        </g>
+        <path d="M560 220 C510 211 485 192 438 181 S350 155 310 139 S225 99 150 65" fill="none" stroke="#f4b860" stroke-width="5" stroke-linecap="round" stroke-dasharray="8 12" marker-end="url(#LMY_arrow)"/>
+        <g fill="#c6a8f4" stroke="#191422" stroke-width="3">
+          <circle cx="560" cy="220" r="9"/><circle cx="438" cy="181" r="7"/><circle cx="310" cy="139" r="7"/><circle cx="150" cy="65" r="9"/>
+        </g>
+        <g fill="#fff" font-family="Consolas, monospace" font-size="13">
+          <text x="575" y="225">touchstart</text><text x="448" y="185">touchmove</text><text x="320" y="143">touchmove</text><text x="160" y="58">touchend</text>
+        </g>
+      </svg>
+      <p class="LMY_caption">路径说明：手指从 A 点按下，经过多个 touchmove 采样点向左上方移动，最后在 B 点抬起。草图表示实际路径，坐标数值为示意。</p>
+    </section>
+
+    <section class="LMY_card">
+      <h2>四、遇到的一个坑与解决办法</h2>
+      <p>在 touchend 里仍读取 touches[0]，会发现手指已经离开、列表为空。<strong>解决：</strong>抬手时改用 changedTouches[0] 读取本次离开屏幕的触点坐标。</p>
+    </section>
+
+    <section class="LMY_card">
+      <h2>五、本次 AI 提示词记录</h2>
+      <p class="LMY_prompt">“https://spontaneous-valkyrie-4e4229.netlify.app/mobile-events-lesson 根据图片和网址，帮我按照要求完成任务1，任务2、任务3、任务4。要求的前缀都改为LMY_。任务3和4还需要有手机测试视频，这个后续我自己完成，先给我空出位置。”</p>
+    </section>
+  </main>
+</body>
+</html>

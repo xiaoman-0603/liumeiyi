@@ -1,0 +1,210 @@
+<!-- 刘美怡 学号: 211 | 建立时间: 2026-11-18 13:55:09 | 使用大模型: Kimi-K3.1-Pro | 功能名称: 摇一摇随机抽取今日菜谱与传感器降级 -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>任务四 · 摇一摇今日菜谱</title>
+  <style>
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body { margin: 0; color: #30271f; background: #f4efe4; font-family: "Microsoft YaHei", sans-serif; }
+    button { font: inherit; }
+    .LMY_page { width: min(100% - 28px, 680px); margin: 0 auto; padding: 20px 0 48px; }
+    .LMY_home { display: inline-block; margin-bottom: 20px; color: #89662e; text-decoration: none; font-weight: 700; }
+    .LMY_hero { padding: 28px; color: #fff9e9; border-radius: 26px; background: linear-gradient(145deg, #46351f, #8e6934); text-align: center; box-shadow: 0 18px 44px rgba(73, 50, 24, .16); }
+    .LMY_kicker { margin: 0; color: #e4cfa5; font-size: 13px; letter-spacing: 2px; }
+    .LMY_hero h1 { margin: 8px 0; font-family: SimSun, serif; font-size: clamp(30px, 8vw, 44px); }
+    .LMY_hero p { margin: 0; }
+    .LMY_shake_mark { display: grid; place-items: center; width: 78px; height: 78px; margin: 22px auto; border: 2px solid #e2c584; border-radius: 24px; font-family: SimSun, serif; font-size: 42px; transform: rotate(-7deg); }
+    .LMY_button { padding: 11px 20px; color: #493519; border: 0; border-radius: 999px; background: #f1d28f; font-weight: 700; cursor: pointer; }
+    .LMY_button:active { transform: scale(.97); }
+    .LMY_status { min-height: 30px; margin: 16px 0; color: #795c33; text-align: center; }
+    .LMY_unsupported { padding: 12px 15px; color: #8c432c; border: 1px solid #e7c1ad; border-radius: 12px; background: #fff1e8; text-align: center; }
+    .LMY_result { position: relative; min-height: 230px; padding: 28px; overflow: hidden; border: 1px solid #dfd1b9; border-radius: 24px; background: #fffdf8; text-align: center; }
+    .LMY_result::before { content: "今日菜谱"; position: absolute; top: 16px; left: 18px; color: #b7a17b; font-size: 12px; letter-spacing: 3px; }
+    .LMY_result_label { margin: 22px 0 6px; color: #a1824a; font-size: 14px; }
+    .LMY_result h2 { margin: 0; color: #654923; font-family: SimSun, serif; font-size: clamp(38px, 10vw, 56px); }
+    .LMY_result_desc { max-width: 450px; margin: 16px auto 22px; color: #766b5c; line-height: 1.8; }
+    .LMY_pop { animation: LMY_pop .42s ease-out; }
+    @keyframes LMY_pop {
+      0% { opacity: .2; transform: translateY(14px) scale(.92); }
+      70% { transform: translateY(-3px) scale(1.02); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .LMY_notes { margin-top: 22px; padding: 22px; border: 1px solid #e1d5c1; border-radius: 20px; background: rgba(255,253,248,.78); line-height: 1.8; }
+    .LMY_notes h2 { margin: 0 0 8px; color: #654923; font-size: 20px; }
+    .LMY_notes p { margin: 8px 0; }
+    .LMY_notes code { color: #8c512f; overflow-wrap: anywhere; }
+    .LMY_video_slot { display: grid; place-items: center; min-height: 210px; margin-top: 22px; padding: 26px; color: #95866e; border: 2px dashed #c5b493; border-radius: 20px; text-align: center; }
+    .LMY_video_slot strong { display: block; margin-bottom: 8px; color: #6c5534; font-size: 19px; }
+    .LMY_video_slot p { margin: 4px 0; }
+    @media (max-width: 480px) {
+      .LMY_hero, .LMY_result { padding: 23px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="LMY_page">
+    <a class="LMY_home" href="file:///d:/网页制作/index.html">← 返回首页</a>
+    <section class="LMY_hero">
+      <p class="LMY_kicker">任务四 · 设备传感器 / 权限 / 降级</p>
+      <h1>摇一摇手机，抽今日菜谱</h1>
+      <p>刘美怡 · 学号 211</p>
+      <div class="LMY_shake_mark" aria-hidden="true">摇</div>
+      <button class="LMY_button" id="LMY_enable" type="button">开启摇一摇</button>
+    </section>
+
+    <p class="LMY_status" id="LMY_status" role="status">正在检测设备能力……</p>
+    <div class="LMY_unsupported" id="LMY_unsupported" hidden>当前设备不支持，请用手机打开。也可以使用下方按钮手动抽取。</div>
+
+    <section class="LMY_result" id="LMY_result" aria-live="polite">
+      <p class="LMY_result_label">今天吃什么？</p>
+      <h2 id="LMY_dishName">等待抽取</h2>
+      <p class="LMY_result_desc" id="LMY_dishDesc">摇动手机，或点击下方“点我抽一次”，让菜谱替你做个决定。</p>
+      <button class="LMY_button" id="LMY_fallback" type="button">点我抽一次</button>
+    </section>
+
+    <section class="LMY_notes">
+      <h2>传感器与降级说明</h2>
+      <p><code>accelerationIncludingGravity</code> 包含重力加速度，手机静止时三轴合成值通常仍接近 9.8；<code>acceleration</code> 尝试排除重力，更接近设备自身运动产生的加速度。本页按任务要求使用前者，阈值约为 18。</p>
+      <p><strong>为什么必须做降级：</strong>桌面电脑通常没有加速度传感器，部分浏览器还要求 HTTPS、用户授权或系统权限。如果不处理权限拒绝、事件不存在和长期无数据，就会一直等待甚至报错。手动按钮保证任何设备都能完成抽菜，友好提示则说明原因。</p>
+      <p><strong>一次摇动只触发一次：</strong>合成加速度超过阈值后记录触发时间，随后进入 1.5 秒冷却，冷却期内忽略后续峰值。</p>
+      <p><strong>踩坑与解决：</strong>只判断 DeviceMotionEvent 是否存在并不够，有些设备有接口却不返回数据；因此增加 2.5 秒无数据检测，并保留手动抽取入口。</p>
+    </section>
+
+    <section class="LMY_video_slot" aria-label="任务四手机测试视频预留位置">
+      <div>
+        <strong>手机测试视频位置（待补充）</strong>
+        <p>后续在此放入任务四真机摇一摇测试视频</p>
+        <p>建议文件名：LMY_mobile-sensor-test.mp4</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    var LMY_dishes = [
+      { name: "番茄牛腩", desc: "牛腩炖至软烂，番茄融入浓郁汤汁，酸甜咸鲜，适合搭配一碗热米饭。" },
+      { name: "清蒸鲈鱼", desc: "姜葱去腥，清蒸保留鲜嫩，最后以热油炸香葱丝，清淡却不失层次。" },
+      { name: "麻婆豆腐", desc: "豆腐细嫩，牛肉末酥香，花椒与豆瓣带来麻辣鲜香，是下饭的经典选择。" },
+      { name: "香菇青菜", desc: "香菇醇厚，青菜清脆，简单快炒保留食材本味，为餐桌添一份清爽。" },
+      { name: "扬州炒饭", desc: "鸡蛋、虾仁、青豆与米饭在锅中翻香，颗粒分明，色彩丰富。" },
+      { name: "冬瓜排骨汤", desc: "排骨慢炖出鲜味，冬瓜清甜软润，一碗热汤温和又满足。" }
+    ];
+    var LMY_status = document.getElementById("LMY_status");
+    var LMY_unsupported = document.getElementById("LMY_unsupported");
+    var LMY_result = document.getElementById("LMY_result");
+    var LMY_dishName = document.getElementById("LMY_dishName");
+    var LMY_dishDesc = document.getElementById("LMY_dishDesc");
+    var LMY_enable = document.getElementById("LMY_enable");
+    var LMY_lastTrigger = 0;
+    var LMY_receivedData = false;
+    var LMY_listening = false;
+    var LMY_detectionTimer = null;
+
+    // 随机抽取一道菜并通过重设类名播放简单弹出动画
+    function LMY_drawDish() {
+      var LMY_index = Math.floor(Math.random() * LMY_dishes.length);
+      LMY_dishName.textContent = LMY_dishes[LMY_index].name;
+      LMY_dishDesc.textContent = LMY_dishes[LMY_index].desc;
+      LMY_result.classList.remove("LMY_pop");
+      void LMY_result.offsetWidth;
+      LMY_result.classList.add("LMY_pop");
+    }
+
+    // 传感器不可用或没有数据时显示友好提示，不影响页面其他功能
+    function LMY_showUnsupported() {
+      LMY_unsupported.hidden = false;
+      LMY_status.textContent = "当前设备不支持，请用手机打开";
+    }
+
+    // 超过 2.5 秒仍未收到有效传感器数据时启用手动降级提示
+    function LMY_checkSensorData() {
+      if (!LMY_receivedData) LMY_showUnsupported();
+    }
+
+    // 读取含重力的三轴加速度，阈值与 1.5 秒冷却共同识别一次摇动
+    function LMY_onDeviceMotion(LMY_event) {
+      var LMY_acceleration = LMY_event.accelerationIncludingGravity;
+      if (!LMY_acceleration) return;
+      if (LMY_acceleration.x === null && LMY_acceleration.y === null && LMY_acceleration.z === null) return;
+      var LMY_x = LMY_acceleration.x || 0;
+      var LMY_y = LMY_acceleration.y || 0;
+      var LMY_z = LMY_acceleration.z || 0;
+      if (!LMY_receivedData) {
+        LMY_receivedData = true;
+        LMY_unsupported.hidden = true;
+        LMY_status.textContent = "传感器已连接，摇一摇手机抽取菜谱";
+      }
+      var LMY_total = Math.sqrt(LMY_x * LMY_x + LMY_y * LMY_y + LMY_z * LMY_z);
+      var LMY_now = Date.now();
+      if (LMY_total > 18 && LMY_now - LMY_lastTrigger > 1500) {
+        LMY_lastTrigger = LMY_now;
+        LMY_drawDish();
+        LMY_status.textContent = "摇到啦！今日菜谱已更新";
+      }
+    }
+
+    // 注册 devicemotion 监听，并启动无数据检测计时器
+    function LMY_startListening() {
+      if (LMY_listening) return;
+      if (!("DeviceMotionEvent" in window)) {
+        LMY_showUnsupported();
+        return;
+      }
+      window.addEventListener("devicemotion", LMY_onDeviceMotion);
+      LMY_listening = true;
+      LMY_receivedData = false;
+      LMY_unsupported.hidden = true;
+      LMY_status.textContent = "正在等待传感器数据，请摇动手机";
+      if (LMY_detectionTimer) clearTimeout(LMY_detectionTimer);
+      LMY_detectionTimer = setTimeout(LMY_checkSensorData, 2500);
+    }
+
+    // 用户点击后申请 iOS 权限，其他支持设备直接开始监听
+    async function LMY_onEnableClick() {
+      if (!("DeviceMotionEvent" in window)) {
+        LMY_showUnsupported();
+        return;
+      }
+      try {
+        if (typeof DeviceMotionEvent.requestPermission === "function") {
+          var LMY_permission = await DeviceMotionEvent.requestPermission();
+          if (LMY_permission !== "granted") {
+            LMY_status.textContent = "未获得运动传感器权限，可点我抽一次";
+            LMY_unsupported.hidden = false;
+            return;
+          }
+        }
+        LMY_startListening();
+      } catch (LMY_error) {
+        LMY_status.textContent = "权限申请失败，请检查浏览器设置或使用手动抽取";
+        LMY_unsupported.hidden = false;
+      }
+    }
+
+    // 无传感器或权限受限时使用手动按钮完成同样的抽菜功能
+    function LMY_onFallbackClick() {
+      LMY_drawDish();
+      LMY_status.textContent = "手动抽取成功";
+    }
+
+    // 页面初始化时区分 iOS 权限流程与普通设备自动检测流程
+    function LMY_initSensor() {
+      if (!("DeviceMotionEvent" in window)) {
+        LMY_showUnsupported();
+        return;
+      }
+      if (typeof DeviceMotionEvent.requestPermission === "function") {
+        LMY_status.textContent = "请点击“开启摇一摇”授予运动传感器权限";
+      } else {
+        LMY_enable.textContent = "重新检测传感器";
+        LMY_startListening();
+      }
+    }
+
+    LMY_enable.addEventListener("click", LMY_onEnableClick);
+    document.getElementById("LMY_fallback").addEventListener("click", LMY_onFallbackClick);
+    LMY_initSensor();
+  </script>
+</body>
+</html>
